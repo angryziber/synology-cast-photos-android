@@ -1,4 +1,4 @@
-# HelloWorld-Android
+# HelloText-Android
 
 This Google Cast demo application shows how to send messages from an Android device to a receiver using a custom namespace. 
 
