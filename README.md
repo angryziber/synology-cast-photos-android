@@ -4,7 +4,7 @@ This Google Cast demo application shows how to send messages from an Android dev
 
 ## Dependencies
 * The Android SDK android-support-v7-appcompat and android-support-v7-mediarouter support libraries (at least revision 19).
-* The Android SDK google-play-services_lib library (at least version 4.2.34)
+* The Android SDK google-play-services_lib library (at least version 4.2.39)
 
 ## Setup Instructions
 * Get a Chromecast device and get it set up for development: https://developers.google.com/cast/docs/developers#Get_started
