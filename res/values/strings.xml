@@ -17,7 +17,7 @@
 <resources>
 
     <string name="app_name">Cast Hello Text</string>
-    <string name="app_id">YOUR_APPLICATION_ID</string>
+    <string name="app_id">794B7BBF</string>
     <string name="namespace">urn:x-cast:com.google.cast.sample.helloworld</string>
     <string name="action_settings">Settings</string>
     <string name="message_to_cast">Message to Cast&#8230;</string>
