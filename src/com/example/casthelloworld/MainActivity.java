@@ -69,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
 	private HelloWorldChannel mHelloWorldChannel;
 	private boolean mApplicationStarted;
 	private boolean mWaitingForReconnect;
+	private String mSessionId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -270,7 +271,7 @@ public class MainActivity extends ActionBarActivity {
 											if (status.isSuccess()) {
 												ApplicationMetadata applicationMetadata = result
 														.getApplicationMetadata();
-												String sessionId = result
+												mSessionId = result
 														.getSessionId();
 												String applicationStatus = result
 														.getApplicationStatus();
@@ -283,7 +284,7 @@ public class MainActivity extends ActionBarActivity {
 																+ ", status: "
 																+ applicationStatus
 																+ ", sessionId: "
-																+ sessionId
+																+ mSessionId
 																+ ", wasLaunched: "
 																+ wasLaunched);
 												mApplicationStarted = true;
@@ -349,7 +350,7 @@ public class MainActivity extends ActionBarActivity {
 			if (mApplicationStarted) {
 				if (mApiClient.isConnected()) {
 					try {
-						Cast.CastApi.stopApplication(mApiClient);
+						Cast.CastApi.stopApplication(mApiClient, mSessionId);
 						if (mHelloWorldChannel != null) {
 							Cast.CastApi.removeMessageReceivedCallbacks(
 									mApiClient,
@@ -367,6 +368,7 @@ public class MainActivity extends ActionBarActivity {
 		}
 		mSelectedDevice = null;
 		mWaitingForReconnect = false;
+		mSessionId = null;
 	}
 
 	/**
