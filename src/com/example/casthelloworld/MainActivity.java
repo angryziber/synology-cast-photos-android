@@ -135,7 +135,7 @@ public class MainActivity extends ActionBarActivity {
 		super.onResume();
 		// Start media router discovery
 		mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
-				MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
+				MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
 	}
 
 	@Override
