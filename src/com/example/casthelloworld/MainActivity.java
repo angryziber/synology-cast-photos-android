@@ -348,7 +348,7 @@ public class MainActivity extends ActionBarActivity {
 		Log.d(TAG, "teardown");
 		if (mApiClient != null) {
 			if (mApplicationStarted) {
-				if (mApiClient.isConnected()) {
+				if (mApiClient.isConnected()  || mApiClient.isConnecting()) {
 					try {
 						Cast.CastApi.stopApplication(mApiClient, mSessionId);
 						if (mHelloWorldChannel != null) {
