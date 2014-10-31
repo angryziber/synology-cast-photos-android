@@ -16,7 +16,7 @@ This Google Cast demo application shows how to send messages from an Android dev
 * Compile and deploy to your Android device.
 
 ## References and How to report bugs
-* Cast APIs: http://developers.google.com/cast/docs
+* Cast APIs: http://developers.google.com/cast/
 * Design Checklist (http://developers.google.com/cast/docs/design_checklist)
 * If you find any issues, please open a bug here on GitHub
 
