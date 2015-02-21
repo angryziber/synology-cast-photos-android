@@ -175,8 +175,7 @@ public class MainActivity extends ActionBarActivity {
 			// Connect to Google Play services
 			connectionCallbacks = new ConnectionCallbacks();
 			connectionFailedListener = new ConnectionFailedListener();
-			Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
-					.builder(selectedDevice, castListener);
+			Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions.builder(selectedDevice, castListener);
 			apiClient = new GoogleApiClient.Builder(this)
 					.addApi(Cast.API, apiOptionsBuilder.build())
 					.addConnectionCallbacks(connectionCallbacks)
@@ -192,8 +191,7 @@ public class MainActivity extends ActionBarActivity {
 	/**
 	 * Google Play services callbacks
 	 */
-	private class ConnectionCallbacks implements
-			GoogleApiClient.ConnectionCallbacks {
+	private class ConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks {
 		@Override
 		public void onConnected(Bundle connectionHint) {
 			Log.d(TAG, "onConnected");
@@ -209,18 +207,13 @@ public class MainActivity extends ActionBarActivity {
 					waitingForReconnect = false;
 
 					// Check if the receiver app is still running
-					if ((connectionHint != null)
-							&& connectionHint
-									.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
-						Log.d(TAG, "App  is no longer running");
+					if ((connectionHint != null) && connectionHint.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
+						Log.d(TAG, "App is no longer running");
 						teardown();
 					} else {
 						// Re-create the custom message channel
 						try {
-							Cast.CastApi.setMessageReceivedCallbacks(
-                  apiClient,
-                  channel.getNamespace(),
-                  channel);
+							Cast.CastApi.setMessageReceivedCallbacks(apiClient, channel.getNamespace(), channel);
 						} catch (IOException e) {
 							Log.e(TAG, "Exception while creating channel", e);
 						}
@@ -228,8 +221,7 @@ public class MainActivity extends ActionBarActivity {
 				} else {
 					// Launch the receiver app
 					Cast.CastApi
-							.launchApplication(apiClient,
-									getString(R.string.app_id), false)
+							.launchApplication(apiClient, getString(R.string.app_id), false)
 							.setResultCallback(
 									new ResultCallback<Cast.ApplicationConnectionResult>() {
 										@Override
@@ -240,14 +232,10 @@ public class MainActivity extends ActionBarActivity {
 													"ApplicationConnectionResultCallback.onResult: statusCode"
 															+ status.getStatusCode());
 											if (status.isSuccess()) {
-												ApplicationMetadata applicationMetadata = result
-														.getApplicationMetadata();
-												castSessionId = result
-														.getSessionId();
-												String applicationStatus = result
-														.getApplicationStatus();
-												boolean wasLaunched = result
-														.getWasLaunched();
+												ApplicationMetadata applicationMetadata = result.getApplicationMetadata();
+												castSessionId = result.getSessionId();
+												String applicationStatus = result.getApplicationStatus();
+												boolean wasLaunched = result.getWasLaunched();
 												Log.d(TAG,
 														"application name: "
 																+ applicationMetadata
@@ -264,24 +252,12 @@ public class MainActivity extends ActionBarActivity {
 												// channel
 												channel = new CastChannel();
 												try {
-													Cast.CastApi
-															.setMessageReceivedCallbacks(
-                                  apiClient,
-                                  channel
-                                      .getNamespace(),
-                                  channel);
+													Cast.CastApi.setMessageReceivedCallbacks(apiClient, channel.getNamespace(), channel);
 												} catch (IOException e) {
-													Log.e(TAG,
-															"Exception while creating channel",
-															e);
+													Log.e(TAG, "Exception while creating channel", e);
 												}
-
-												// set the initial instructions
-												// on the receiver
-												sendCommand(getString(R.string.instructions));
 											} else {
-												Log.e(TAG,
-														"application could not launch");
+												Log.e(TAG, "application could not launch");
 												teardown();
 											}
 										}
@@ -302,12 +278,10 @@ public class MainActivity extends ActionBarActivity {
 	/**
 	 * Google Play services callbacks
 	 */
-	private class ConnectionFailedListener implements
-			GoogleApiClient.OnConnectionFailedListener {
+	private class ConnectionFailedListener implements GoogleApiClient.OnConnectionFailedListener {
 		@Override
 		public void onConnectionFailed(ConnectionResult result) {
 			Log.e(TAG, "onConnectionFailed ");
-
 			teardown();
 		}
 	}
@@ -323,9 +297,7 @@ public class MainActivity extends ActionBarActivity {
 					try {
 						Cast.CastApi.stopApplication(apiClient, castSessionId);
 						if (channel != null) {
-							Cast.CastApi.removeMessageReceivedCallbacks(
-                  apiClient,
-									channel.getNamespace());
+							Cast.CastApi.removeMessageReceivedCallbacks(apiClient, channel.getNamespace());
 							channel = null;
 						}
 					} catch (IOException e) {
