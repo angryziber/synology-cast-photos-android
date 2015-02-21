@@ -331,7 +331,7 @@ public class MainActivity extends ActionBarActivity {
 				Log.e(TAG, "Exception while sending message", e);
 			}
 		} else {
-			Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, "Chromecast not connected", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -345,6 +345,7 @@ public class MainActivity extends ActionBarActivity {
 
 		@Override
 		public void onMessageReceived(CastDevice castDevice, String namespace, String message) {
+      Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 			Log.d(TAG, "onMessageReceived: " + message);
 		}
 	}
