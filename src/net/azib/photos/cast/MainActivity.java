@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.casthelloworld;
+package net.azib.photos.cast;
 
 import java.io.IOException;
 
@@ -54,8 +54,6 @@ import com.google.android.gms.common.api.Status;
 public class MainActivity extends ActionBarActivity {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
-
-	private static final int REQUEST_CODE = 1;
 
 	private MediaRouter mMediaRouter;
 	private MediaRouteSelector mMediaRouteSelector;
