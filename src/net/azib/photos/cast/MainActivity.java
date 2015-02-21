@@ -52,21 +52,20 @@ import com.google.android.gms.common.api.Status;
  * Main activity to send messages to the receiver.
  */
 public class MainActivity extends ActionBarActivity {
-
 	private static final String TAG = MainActivity.class.getSimpleName();
 
-	private MediaRouter mMediaRouter;
-	private MediaRouteSelector mMediaRouteSelector;
-	private MediaRouter.Callback mMediaRouterCallback;
-	private CastDevice mSelectedDevice;
-	private GoogleApiClient mApiClient;
-	private Cast.Listener mCastListener;
-	private ConnectionCallbacks mConnectionCallbacks;
-	private ConnectionFailedListener mConnectionFailedListener;
-	private HelloWorldChannel mHelloWorldChannel;
-	private boolean mApplicationStarted;
-	private boolean mWaitingForReconnect;
-	private String mSessionId;
+	private MediaRouter mediaRouter;
+	private MediaRouteSelector mediaRouteSelector;
+	private MediaRouter.Callback mediaRouterCallback;
+	private CastDevice selectedDevice;
+	private GoogleApiClient apiClient;
+	private Cast.Listener castListener;
+	private ConnectionCallbacks connectionCallbacks;
+	private ConnectionFailedListener connectionFailedListener;
+	private CastChannel channel;
+	private boolean started;
+	private boolean waitingForReconnect;
+	private String castSessionId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +73,9 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 
 		ActionBar actionBar = getSupportActionBar();
-		actionBar.setBackgroundDrawable(new ColorDrawable(
-				android.R.color.transparent));
+		actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
 
-		// When the user clicks on the button, use Android voice recognition to
-		// get text
-		Button voiceButton = (Button) findViewById(R.id.voiceButton);
+		Button voiceButton = (Button) findViewById(R.id.castPhotosButton);
 		voiceButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -88,12 +84,12 @@ public class MainActivity extends ActionBarActivity {
 		});
 
 		// Configure Cast device discovery
-		mMediaRouter = MediaRouter.getInstance(getApplicationContext());
-		mMediaRouteSelector = new MediaRouteSelector.Builder()
+		mediaRouter = MediaRouter.getInstance(getApplicationContext());
+		mediaRouteSelector = new MediaRouteSelector.Builder()
 				.addControlCategory(
 						CastMediaControlIntent.categoryForCast(getResources()
 								.getString(R.string.app_id))).build();
-		mMediaRouterCallback = new MyMediaRouterCallback();
+		mediaRouterCallback = new MyMediaRouterCallback();
 	}
 
 	/**
@@ -101,23 +97,23 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void castPhotos() {
     Switch randomSwitch = (Switch) findViewById(R.id.randomSwitch);
-    EditText path = (EditText) findViewById(R.id.editText);
-    sendMessage((randomSwitch.isChecked() ? "rnd:" : "seq:") + path.getText());
+    EditText path = (EditText) findViewById(R.id.photosPathEdit);
+    sendCommand((randomSwitch.isChecked() ? "rnd:" : "seq:") + path.getText());
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		// Start media router discovery
-		mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
-				MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+		mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback,
+        MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
 	}
 
 	@Override
 	protected void onPause() {
 		if (isFinishing()) {
 			// End media router discovery
-			mMediaRouter.removeCallback(mMediaRouterCallback);
+			mediaRouter.removeCallback(mediaRouterCallback);
 		}
 		super.onPause();
 	}
@@ -136,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
 		MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat
 				.getActionProvider(mediaRouteMenuItem);
 		// Set the MediaRouteActionProvider selector for device discovery.
-		mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
+		mediaRouteActionProvider.setRouteSelector(mediaRouteSelector);
 		return true;
 	}
 
@@ -149,7 +145,7 @@ public class MainActivity extends ActionBarActivity {
 		public void onRouteSelected(MediaRouter router, RouteInfo info) {
 			Log.d(TAG, "onRouteSelected");
 			// Handle the user route selection.
-			mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
+			selectedDevice = CastDevice.getFromBundle(info.getExtras());
 
 			launchReceiver();
 		}
@@ -158,7 +154,7 @@ public class MainActivity extends ActionBarActivity {
 		public void onRouteUnselected(MediaRouter router, RouteInfo info) {
 			Log.d(TAG, "onRouteUnselected: info=" + info);
 			teardown();
-			mSelectedDevice = null;
+			selectedDevice = null;
 		}
 	}
 
@@ -167,7 +163,7 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void launchReceiver() {
 		try {
-			mCastListener = new Cast.Listener() {
+			castListener = new Cast.Listener() {
 
 				@Override
 				public void onApplicationDisconnected(int errorCode) {
@@ -177,17 +173,17 @@ public class MainActivity extends ActionBarActivity {
 
 			};
 			// Connect to Google Play services
-			mConnectionCallbacks = new ConnectionCallbacks();
-			mConnectionFailedListener = new ConnectionFailedListener();
+			connectionCallbacks = new ConnectionCallbacks();
+			connectionFailedListener = new ConnectionFailedListener();
 			Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions
-					.builder(mSelectedDevice, mCastListener);
-			mApiClient = new GoogleApiClient.Builder(this)
+					.builder(selectedDevice, castListener);
+			apiClient = new GoogleApiClient.Builder(this)
 					.addApi(Cast.API, apiOptionsBuilder.build())
-					.addConnectionCallbacks(mConnectionCallbacks)
-					.addOnConnectionFailedListener(mConnectionFailedListener)
+					.addConnectionCallbacks(connectionCallbacks)
+					.addOnConnectionFailedListener(connectionFailedListener)
 					.build();
 
-			mApiClient.connect();
+			apiClient.connect();
 		} catch (Exception e) {
 			Log.e(TAG, "Failed launchReceiver", e);
 		}
@@ -202,15 +198,15 @@ public class MainActivity extends ActionBarActivity {
 		public void onConnected(Bundle connectionHint) {
 			Log.d(TAG, "onConnected");
 
-			if (mApiClient == null) {
+			if (apiClient == null) {
 				// We got disconnected while this runnable was pending
 				// execution.
 				return;
 			}
 
 			try {
-				if (mWaitingForReconnect) {
-					mWaitingForReconnect = false;
+				if (waitingForReconnect) {
+					waitingForReconnect = false;
 
 					// Check if the receiver app is still running
 					if ((connectionHint != null)
@@ -222,9 +218,9 @@ public class MainActivity extends ActionBarActivity {
 						// Re-create the custom message channel
 						try {
 							Cast.CastApi.setMessageReceivedCallbacks(
-									mApiClient,
-									mHelloWorldChannel.getNamespace(),
-									mHelloWorldChannel);
+                  apiClient,
+                  channel.getNamespace(),
+                  channel);
 						} catch (IOException e) {
 							Log.e(TAG, "Exception while creating channel", e);
 						}
@@ -232,7 +228,7 @@ public class MainActivity extends ActionBarActivity {
 				} else {
 					// Launch the receiver app
 					Cast.CastApi
-							.launchApplication(mApiClient,
+							.launchApplication(apiClient,
 									getString(R.string.app_id), false)
 							.setResultCallback(
 									new ResultCallback<Cast.ApplicationConnectionResult>() {
@@ -246,7 +242,7 @@ public class MainActivity extends ActionBarActivity {
 											if (status.isSuccess()) {
 												ApplicationMetadata applicationMetadata = result
 														.getApplicationMetadata();
-												mSessionId = result
+												castSessionId = result
 														.getSessionId();
 												String applicationStatus = result
 														.getApplicationStatus();
@@ -259,21 +255,21 @@ public class MainActivity extends ActionBarActivity {
 																+ ", status: "
 																+ applicationStatus
 																+ ", sessionId: "
-																+ mSessionId
+																+ castSessionId
 																+ ", wasLaunched: "
 																+ wasLaunched);
-												mApplicationStarted = true;
+												started = true;
 
 												// Create the custom message
 												// channel
-												mHelloWorldChannel = new HelloWorldChannel();
+												channel = new CastChannel();
 												try {
 													Cast.CastApi
 															.setMessageReceivedCallbacks(
-																	mApiClient,
-																	mHelloWorldChannel
-																			.getNamespace(),
-																	mHelloWorldChannel);
+                                  apiClient,
+                                  channel
+                                      .getNamespace(),
+                                  channel);
 												} catch (IOException e) {
 													Log.e(TAG,
 															"Exception while creating channel",
@@ -282,7 +278,7 @@ public class MainActivity extends ActionBarActivity {
 
 												// set the initial instructions
 												// on the receiver
-												sendMessage(getString(R.string.instructions));
+												sendCommand(getString(R.string.instructions));
 											} else {
 												Log.e(TAG,
 														"application could not launch");
@@ -299,7 +295,7 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		public void onConnectionSuspended(int cause) {
 			Log.d(TAG, "onConnectionSuspended");
-			mWaitingForReconnect = true;
+			waitingForReconnect = true;
 		}
 	}
 
@@ -321,41 +317,36 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void teardown() {
 		Log.d(TAG, "teardown");
-		if (mApiClient != null) {
-			if (mApplicationStarted) {
-				if (mApiClient.isConnected()  || mApiClient.isConnecting()) {
+		if (apiClient != null) {
+			if (started) {
+				if (apiClient.isConnected()  || apiClient.isConnecting()) {
 					try {
-						Cast.CastApi.stopApplication(mApiClient, mSessionId);
-						if (mHelloWorldChannel != null) {
+						Cast.CastApi.stopApplication(apiClient, castSessionId);
+						if (channel != null) {
 							Cast.CastApi.removeMessageReceivedCallbacks(
-									mApiClient,
-									mHelloWorldChannel.getNamespace());
-							mHelloWorldChannel = null;
+                  apiClient,
+									channel.getNamespace());
+							channel = null;
 						}
 					} catch (IOException e) {
 						Log.e(TAG, "Exception while removing channel", e);
 					}
-					mApiClient.disconnect();
+					apiClient.disconnect();
 				}
-				mApplicationStarted = false;
+				started = false;
 			}
-			mApiClient = null;
+			apiClient = null;
 		}
-		mSelectedDevice = null;
-		mWaitingForReconnect = false;
-		mSessionId = null;
+		selectedDevice = null;
+		waitingForReconnect = false;
+		castSessionId = null;
 	}
 
-	/**
-	 * Send a text message to the receiver
-	 * 
-	 * @param message
-	 */
-	private void sendMessage(String message) {
-		if (mApiClient != null && mHelloWorldChannel != null) {
+	private void sendCommand(String message) {
+		if (apiClient != null && channel != null) {
 			try {
-				Cast.CastApi.sendMessage(mApiClient,
-						mHelloWorldChannel.getNamespace(), message)
+				Cast.CastApi.sendMessage(apiClient,
+						channel.getNamespace(), message)
 						.setResultCallback(new ResultCallback<Status>() {
 							@Override
 							public void onResult(Status result) {
@@ -368,32 +359,21 @@ public class MainActivity extends ActionBarActivity {
 				Log.e(TAG, "Exception while sending message", e);
 			}
 		} else {
-			Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	/**
 	 * Custom message channel
 	 */
-	class HelloWorldChannel implements MessageReceivedCallback {
-
-		/**
-		 * @return custom namespace
-		 */
+	class CastChannel implements MessageReceivedCallback {
 		public String getNamespace() {
 			return getString(R.string.namespace);
 		}
 
-		/*
-		 * Receive message from the receiver app
-		 */
 		@Override
-		public void onMessageReceived(CastDevice castDevice, String namespace,
-				String message) {
+		public void onMessageReceived(CastDevice castDevice, String namespace, String message) {
 			Log.d(TAG, "onMessageReceived: " + message);
 		}
-
 	}
-
 }
