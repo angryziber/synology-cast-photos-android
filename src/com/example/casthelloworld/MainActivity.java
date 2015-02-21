@@ -17,12 +17,9 @@
 package com.example.casthelloworld;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -36,6 +33,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.cast.ApplicationMetadata;
@@ -86,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
 		voiceButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startVoiceRecognitionActivity();
+				castPhotos();
 			}
 		});
 
@@ -102,32 +101,10 @@ public class MainActivity extends ActionBarActivity {
 	/**
 	 * Android voice recognition
 	 */
-	private void startVoiceRecognitionActivity() {
-		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-		intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-				getString(R.string.message_to_cast));
-		startActivityForResult(intent, REQUEST_CODE);
-	}
-
-	/*
-	 * Handle the voice recognition response
-	 * 
-	 * @see android.support.v4.app.FragmentActivity#onActivityResult(int, int,
-	 * android.content.Intent)
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-			ArrayList<String> matches = data
-					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-			if (matches.size() > 0) {
-				Log.d(TAG, matches.get(0));
-				sendMessage(matches.get(0));
-			}
-		}
-		super.onActivityResult(requestCode, resultCode, data);
+	private void castPhotos() {
+    Switch randomSwitch = (Switch) findViewById(R.id.randomSwitch);
+    EditText path = (EditText) findViewById(R.id.editText);
+    sendMessage((randomSwitch.isChecked() ? "rnd:" : "seq:") + path.getText());
 	}
 
 	@Override

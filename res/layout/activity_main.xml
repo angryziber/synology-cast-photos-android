@@ -29,8 +29,23 @@
         android:id="@+id/voiceButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:background="@drawable/voice_button" />
+        android:text="Cast Photos"
+        android:layout_marginTop="73dp" android:layout_below="@+id/editText" android:layout_centerHorizontal="true"
+        android:theme="@style/AppTheme"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginTop="32dp"
+            android:layout_alignParentRight="true" android:layout_alignParentEnd="true" android:editable="true"
+            android:enabled="true" android:text="2014/" android:textColor="@android:color/black"/>
+    <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/randomSwitch"
+            android:layout_below="@+id/editText" android:layout_centerHorizontal="true"
+            android:layout_marginTop="27dp" android:textOn="Random" android:textOff="Sequential"
+            android:enabled="true" android:checked="true" android:theme="@style/AppTheme"/>
 
 </RelativeLayout>
