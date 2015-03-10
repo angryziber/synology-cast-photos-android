@@ -75,13 +75,41 @@ public class MainActivity extends ActionBarActivity {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
 
-		Button voiceButton = (Button) findViewById(R.id.castPhotosButton);
-		voiceButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				castPhotos();
-			}
-		});
+		Button castPhotosButton = (Button) findViewById(R.id.castPhotosButton);
+		castPhotosButton.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        castPhotos();
+      }
+    });
+
+    Button nextButton = (Button) findViewById(R.id.next_button);
+    nextButton.setOnClickListener(new OnClickListener() {
+      @Override public void onClick(View view) {
+        sendCommand("next");
+      }
+    });
+
+    Button prevButton = (Button) findViewById(R.id.prev_button);
+    prevButton.setOnClickListener(new OnClickListener() {
+      @Override public void onClick(View view) {
+        sendCommand("prev");
+      }
+    });
+
+    Button nextMoreButton = (Button) findViewById(R.id.next_more_button);
+    nextMoreButton.setOnClickListener(new OnClickListener() {
+      @Override public void onClick(View view) {
+        sendCommand("next:10");
+      }
+    });
+
+    Button prevMoreButton = (Button) findViewById(R.id.prev_more_button);
+    prevMoreButton.setOnClickListener(new OnClickListener() {
+      @Override public void onClick(View view) {
+        sendCommand("prev:10");
+      }
+    });
 
 		// Configure Cast device discovery
 		mediaRouter = MediaRouter.getInstance(getApplicationContext());
@@ -92,9 +120,6 @@ public class MainActivity extends ActionBarActivity {
 		mediaRouterCallback = new MyMediaRouterCallback();
 	}
 
-	/**
-	 * Android voice recognition
-	 */
 	private void castPhotos() {
     Switch randomSwitch = (Switch) findViewById(R.id.randomSwitch);
     EditText path = (EditText) findViewById(R.id.photosPathEdit);

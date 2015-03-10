@@ -31,21 +31,42 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Cast Photos"
-        android:layout_marginTop="73dp" android:layout_below="@+id/photosPathEdit" android:layout_centerHorizontal="true"
-        android:theme="@style/AppTheme"/>
+        android:theme="@style/AppTheme"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/prev_button" android:layout_centerHorizontal="true"/>
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/photosPathEdit" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_marginTop="32dp"
-            android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
-            android:enabled="true" android:text="2014/" android:textColor="@android:color/black"/>
+            android:id="@+id/photosPathEdit"
+            android:enabled="true" android:text="2014/" android:textColor="@android:color/black"
+            android:layout_above="@+id/castPhotosButton" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginBottom="40dp"
+            android:layout_alignParentRight="true" android:layout_alignParentEnd="true" android:textSize="24sp"/>
     <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/randomSwitch"
-            android:layout_below="@+id/photosPathEdit" android:layout_centerHorizontal="true"
-            android:layout_marginTop="27dp" android:textOn="Random" android:textOff="Sequential"
-            android:enabled="true" android:checked="true" android:theme="@style/AppTheme"/>
+            android:textOn="Random" android:textOff="Sequential"
+            android:enabled="true" android:checked="true" android:theme="@style/AppTheme"
+            android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="&lt;"
+            android:id="@+id/prev_button"
+            android:layout_centerVertical="true" android:layout_toLeftOf="@+id/next_button"
+            android:layout_toStartOf="@+id/next_button" android:theme="@style/AppTheme"/>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">"
+            android:id="@+id/next_button"
+            android:layout_alignTop="@+id/prev_button" android:layout_alignRight="@+id/castPhotosButton"
+            android:layout_alignEnd="@+id/castPhotosButton" android:theme="@style/AppTheme"/>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">>"
+            android:id="@+id/next_more_button"
+            android:layout_alignBottom="@+id/next_button" android:layout_toRightOf="@+id/next_button"
+            android:layout_toEndOf="@+id/next_button" android:theme="@style/AppTheme"/>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="&lt;&lt;"
+            android:id="@+id/prev_more_button"
+            android:layout_below="@+id/castPhotosButton" android:layout_toLeftOf="@+id/prev_button"
+            android:layout_toStartOf="@+id/prev_button" android:theme="@style/AppTheme"/>
 
 </RelativeLayout>
