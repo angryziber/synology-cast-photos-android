@@ -1,6 +1,5 @@
-# Synology NAS Photo Cast
+# Synology NAS Photo Cast for Android
 
-A simple Android app to control photo casting from Synology NAS.
+A simple Android app (Chromecast sender) to control photo casting from Synology NAS.
 
-Uses receiver in the synology-photo-cast repository.
-
+Uses Chromecast receiver in the [synology-photo-cast](https://github.com/angryziber/synology-cast-photos) repository.
