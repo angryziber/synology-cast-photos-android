@@ -114,10 +114,12 @@ public class MainActivity extends ActionBarActivity {
 		// Configure Cast device discovery
 		mediaRouter = MediaRouter.getInstance(getApplicationContext());
 		mediaRouteSelector = new MediaRouteSelector.Builder()
-				.addControlCategory(
-						CastMediaControlIntent.categoryForCast(getResources()
-								.getString(R.string.app_id))).build();
+				.addControlCategory(CastMediaControlIntent.categoryForCast(getAppId())).build();
 		mediaRouterCallback = new MyMediaRouterCallback();
+	}
+
+	private String getAppId() {
+		return getString(R.string.app_id);
 	}
 
 	private void castPhotos() {
@@ -246,7 +248,7 @@ public class MainActivity extends ActionBarActivity {
 				} else {
 					// Launch the receiver app
 					Cast.CastApi
-							.launchApplication(apiClient, getString(R.string.app_id), false)
+							.launchApplication(apiClient, getAppId(), false)
 							.setResultCallback(
 									new ResultCallback<Cast.ApplicationConnectionResult>() {
 										@Override
@@ -264,7 +266,7 @@ public class MainActivity extends ActionBarActivity {
 												Log.d(TAG,
 														"application name: "
 																+ applicationMetadata
-																		.getName()
+																.getName()
 																+ ", status: "
 																+ applicationStatus
 																+ ", sessionId: "

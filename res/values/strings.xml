@@ -17,7 +17,8 @@
 <resources>
 
     <string name="app_name">Cast NAS photos</string>
-    <string name="app_id">40FA4E04</string>
+    <string name="app_id_local">40FA4E04</string>
+    <string name="app_id">87673D37</string>
     <string name="namespace">urn:x-cast:message</string>
     <string name="action_settings">Settings</string>
     <string name="message_to_cast">Message to Cast&#8230;</string>
