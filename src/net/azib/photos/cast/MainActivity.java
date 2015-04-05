@@ -32,10 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
@@ -74,6 +71,11 @@ public class MainActivity extends ActionBarActivity {
 
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+
+		AutoCompleteTextView path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+				android.R.layout.simple_dropdown_item_1line, new String[] {"2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015"});
+		path.setAdapter(adapter);
 
 		Button castPhotosButton = (Button) findViewById(R.id.castPhotosButton);
 		castPhotosButton.setOnClickListener(new OnClickListener() {
@@ -124,7 +126,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private void castPhotos() {
     Switch randomSwitch = (Switch) findViewById(R.id.randomSwitch);
-    EditText path = (EditText) findViewById(R.id.photosPathEdit);
+    AutoCompleteTextView path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
     sendCommand((randomSwitch.isChecked() ? "rnd:" : "seq:") + path.getText());
 	}
 

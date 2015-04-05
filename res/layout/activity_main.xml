@@ -34,7 +34,7 @@
         android:theme="@style/AppTheme"
         android:layout_marginBottom="20dp"
         android:layout_above="@+id/prev_button" android:layout_centerHorizontal="true"/>
-    <EditText
+    <AutoCompleteTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/photosPathEdit"
