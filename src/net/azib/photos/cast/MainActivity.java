@@ -73,9 +73,7 @@ public class MainActivity extends ActionBarActivity {
 		actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
 
 		AutoCompleteTextView path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-				android.R.layout.simple_dropdown_item_1line, new String[] {"2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015"});
-		path.setAdapter(adapter);
+		path.setAdapter(new PhotoDirsSuggestionAdapter(this));
 
 		Button castPhotosButton = (Button) findViewById(R.id.castPhotosButton);
 		castPhotosButton.setOnClickListener(new OnClickListener() {
