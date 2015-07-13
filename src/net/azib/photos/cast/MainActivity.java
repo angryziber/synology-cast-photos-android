@@ -80,45 +80,42 @@ public class MainActivity extends AppCompatActivity {
 
 		Button castPhotosButton = (Button) findViewById(R.id.castPhotosButton);
 		castPhotosButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        castPhotos();
-      }
-    });
+			@Override
+			public void onClick(View v) {
+				castPhotos();
+			}
+		});
 
-    Button nextButton = (Button) findViewById(R.id.next_button);
-    nextButton.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View view) {
-        sendCommand("next");
-      }
-    });
-
-    Button prevButton = (Button) findViewById(R.id.prev_button);
-    prevButton.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View view) {
-        sendCommand("prev");
-      }
-    });
-
-    Button nextMoreButton = (Button) findViewById(R.id.next_more_button);
-    nextMoreButton.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View view) {
-        sendCommand("next:10");
-      }
-    });
-
-    Button prevMoreButton = (Button) findViewById(R.id.prev_more_button);
-    prevMoreButton.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View view) {
-        sendCommand("prev:10");
-      }
-    });
+		assignCommand(R.id.next_button, "next");
+		assignCommand(R.id.prev_button, "prev");
+		assignCommand(R.id.next_more_button, "next:10");
+		assignCommand(R.id.prev_more_button, "prev:10");
+		assignCommand(R.id.mark_delete_button, "mark:delete");
+		assignCommand(R.id.mark_red_button, "mark:red");
+		assignCommand(R.id.mark_yellow_button, "mark:yellow");
+		assignCommand(R.id.mark_green_button, "mark:green");
+		assignCommand(R.id.mark_blue_button, "mark:blue");
+		assignCommand(R.id.mark_0_button, "mark:0");
+		assignCommand(R.id.mark_1_button, "mark:1");
+		assignCommand(R.id.mark_2_button, "mark:2");
+		assignCommand(R.id.mark_3_button, "mark:3");
+		assignCommand(R.id.mark_4_button, "mark:4");
+		assignCommand(R.id.mark_5_button, "mark:5");
 
 		// Configure Cast device discovery
 		mediaRouter = MediaRouter.getInstance(getApplicationContext());
 		mediaRouteSelector = new MediaRouteSelector.Builder()
 				.addControlCategory(CastMediaControlIntent.categoryForCast(getAppId())).build();
 		mediaRouterCallback = new MyMediaRouterCallback();
+	}
+
+	private void assignCommand(int buttonId, final String command) {
+		Button button = (Button) findViewById(buttonId);
+		button.setOnClickListener(new OnClickListener() {
+			@Override public void onClick(View view) {
+				sendCommand(command);
+			}
+		});
 	}
 
 	private String getAppId() {
