@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/photosPathEdit"
-            android:enabled="true" android:text="2014/" android:textColor="@android:color/black"
+            android:enabled="true" android:textColor="@android:color/black"
             android:layout_above="@+id/castPhotosButton" android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" android:layout_marginBottom="40dp"
             android:layout_alignParentRight="true" android:layout_alignParentEnd="true" android:textSize="24sp"/>

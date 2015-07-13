@@ -17,6 +17,8 @@
 package net.azib.photos.cast;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -74,6 +76,7 @@ public class MainActivity extends ActionBarActivity {
 
 		AutoCompleteTextView path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
 		path.setAdapter(new PhotoDirsSuggestionAdapter(this));
+		path.setText(new SimpleDateFormat("yyyy").format(new Date()));
 
 		Button castPhotosButton = (Button) findViewById(R.id.castPhotosButton);
 		castPhotosButton.setOnClickListener(new OnClickListener() {
