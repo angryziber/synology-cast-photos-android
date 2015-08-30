@@ -16,10 +16,6 @@
 
 package net.azib.photos.cast;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -34,8 +30,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
-
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.Switch;
+import android.widget.Toast;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.Cast.ApplicationConnectionResult;
@@ -47,11 +45,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Main activity to send messages to the receiver.
  */
 public class MainActivity extends AppCompatActivity {
 	private static final String TAG = MainActivity.class.getSimpleName();
+
+	Switch randomSwitch;
 
 	private MediaRouter mediaRouter;
 	private MediaRouteSelector mediaRouteSelector;
@@ -102,6 +106,13 @@ public class MainActivity extends AppCompatActivity {
 		assignCommand(R.id.mark_4_button, "mark:4");
 		assignCommand(R.id.mark_5_button, "mark:5");
 
+		randomSwitch = (Switch) findViewById(R.id.randomSwitch);
+		randomSwitch.setOnClickListener(new OnClickListener() {
+			@Override public void onClick(View v) {
+				sendCommand(randomSwitch.isChecked() ? "rnd" : "seq");
+			}
+		});
+
 		// Configure Cast device discovery
 		mediaRouter = MediaRouter.getInstance(getApplicationContext());
 		mediaRouteSelector = new MediaRouteSelector.Builder()
@@ -123,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void castPhotos() {
-    Switch randomSwitch = (Switch) findViewById(R.id.randomSwitch);
     AutoCompleteTextView path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
     sendCommand((randomSwitch.isChecked() ? "rnd:" : "seq:") + path.getText());
 	}
