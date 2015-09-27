@@ -72,33 +72,32 @@
     <LinearLayout android:id="@+id/mark_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_above="@+id/star_buttons" android:layout_centerHorizontal="true">
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="x"
-                android:id="@+id/mark_delete_button"
-                android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_delete_button" android:theme="@style/AppTheme" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="●"
-                android:id="@+id/mark_red_button" android:textColor="#ff0000" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_red_button" android:textColor="#ff0000" android:theme="@style/AppTheme" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="●"
-                android:id="@+id/mark_yellow_button" android:textColor="#ffff00" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_yellow_button" android:textColor="#ffff00" android:theme="@style/AppTheme" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="●"
-                android:id="@+id/mark_green_button" android:textColor="#00ff00" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_green_button" android:textColor="#00ff00" android:theme="@style/AppTheme" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="●"
-                android:id="@+id/mark_blue_button" android:textColor="#0000ff" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_blue_button" android:textColor="#0000ff" android:theme="@style/AppTheme" android:minWidth="50dp"/>
     </LinearLayout>
 
 
     <LinearLayout android:id="@+id/star_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0"
-                android:id="@+id/mark_0_button" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_0_button" android:theme="@style/AppTheme" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1"
-                android:id="@+id/mark_1_button" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_1_button" android:theme="@style/AppTheme" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2"
-                android:id="@+id/mark_2_button" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_2_button" android:theme="@style/AppTheme" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3"
-                android:id="@+id/mark_3_button" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_3_button" android:theme="@style/AppTheme" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4"
-                android:id="@+id/mark_4_button" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_4_button" android:theme="@style/AppTheme" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5"
-                android:id="@+id/mark_5_button" android:theme="@style/AppTheme"/>
+                android:id="@+id/mark_5_button" android:theme="@style/AppTheme" android:minWidth="50dp"/>
     </LinearLayout>
 
 </RelativeLayout>
