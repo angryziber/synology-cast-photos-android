@@ -293,6 +293,7 @@ public class MainActivity extends AppCompatActivity {
 												} catch (IOException e) {
 													Log.e(TAG, "Exception while creating channel", e);
 												}
+												castPhotos();
 											} else {
 												Log.e(TAG, "application could not launch");
 												teardown();
