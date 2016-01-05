@@ -25,6 +25,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/randomSwitch"
+        android:textOn="Random" android:textOff="Sequential"
+        android:enabled="true" android:checked="true"
+        android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
+
+    <AutoCompleteTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/photosPathEdit"
+        android:enabled="true" android:textColor="@android:color/black"
+        android:layout_below="@id/randomSwitch"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" android:layout_marginTop="40dp" android:layout_marginBottom="40dp"
+        android:layout_alignParentRight="true" android:layout_alignParentEnd="true" android:textSize="24sp"/>
+
     <Button
         android:id="@+id/castPhotosButton"
         android:layout_width="wrap_content"
@@ -32,41 +50,20 @@
         android:layout_gravity="center"
         android:text="Cast Photos"
         android:layout_marginBottom="20dp"
-        android:layout_above="@+id/prev_button" android:layout_centerHorizontal="true"/>
-    <AutoCompleteTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/photosPathEdit"
-            android:enabled="true" android:textColor="@android:color/black"
-            android:layout_above="@+id/castPhotosButton" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_marginBottom="40dp"
-            android:layout_alignParentRight="true" android:layout_alignParentEnd="true" android:textSize="24sp"/>
-    <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/randomSwitch"
-            android:textOn="Random" android:textOff="Sequential"
-            android:enabled="true" android:checked="true"
-            android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="&lt;"
-            android:id="@+id/prev_button"
-            android:layout_centerVertical="true" android:layout_toLeftOf="@+id/next_button"
-            android:layout_toStartOf="@+id/next_button"/>
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">"
-            android:id="@+id/next_button"
-            android:layout_alignTop="@+id/prev_button" android:layout_alignRight="@+id/castPhotosButton"
-            android:layout_alignEnd="@+id/castPhotosButton"/>
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">>"
-            android:id="@+id/next_more_button"
-            android:layout_alignBottom="@+id/next_button" android:layout_toRightOf="@+id/next_button"
-            android:layout_toEndOf="@+id/next_button"/>
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="&lt;&lt;"
-            android:id="@+id/prev_more_button"
-            android:layout_below="@+id/castPhotosButton" android:layout_toLeftOf="@+id/prev_button"
-            android:layout_toStartOf="@+id/prev_button"/>
+        android:layout_below="@+id/photosPathEdit" android:layout_centerHorizontal="true"/>
+
+
+    <LinearLayout android:id="@+id/nav_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:orientation="horizontal" android:layout_below="@+id/castPhotosButton" android:layout_centerHorizontal="true">
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="&lt;&lt;"
+                android:id="@+id/prev_more_button" android:minWidth="80dp"/>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:id="@+id/prev_button" android:text="&lt;" android:minWidth="80dp"/>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">"
+                android:id="@+id/next_button" android:minWidth="80dp"/>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">>"
+                android:id="@+id/next_more_button" android:minWidth="80dp"/>
+    </LinearLayout>
 
     <LinearLayout android:id="@+id/mark_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_above="@+id/star_buttons" android:layout_centerHorizontal="true">
