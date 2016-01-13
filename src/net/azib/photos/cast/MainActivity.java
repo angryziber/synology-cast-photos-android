@@ -46,8 +46,6 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Main activity to send messages to the receiver.
@@ -56,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 	private static final String TAG = MainActivity.class.getSimpleName();
 
 	Switch randomSwitch;
+	AutoCompleteTextView path;
 
 	private MediaRouter mediaRouter;
 	private MediaRouteSelector mediaRouteSelector;
@@ -78,9 +77,9 @@ public class MainActivity extends AppCompatActivity {
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
 
-		AutoCompleteTextView path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
+		path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
 		path.setAdapter(new PhotoDirsSuggestionAdapter(this));
-		path.setText(new SimpleDateFormat("yyyy").format(new Date()));
+//		path.setText(new SimpleDateFormat("yyyy").format(new Date()));
 
 		Button castPhotosButton = (Button) findViewById(R.id.castPhotosButton);
 		castPhotosButton.setOnClickListener(new OnClickListener() {
@@ -134,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void castPhotos() {
-    AutoCompleteTextView path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
     sendCommand((randomSwitch.isChecked() ? "rnd:" : "seq:") + path.getText());
 	}
 
