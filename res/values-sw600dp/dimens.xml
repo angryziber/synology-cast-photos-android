@@ -7,5 +7,6 @@
     -->
 
     <bool name="portrait_only">false</bool>
+    <dimen name="path_margin_bottom">20dp</dimen>
 
 </resources>
