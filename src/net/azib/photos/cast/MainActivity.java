@@ -16,10 +16,8 @@
 
 package net.azib.photos.cast;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.media.MediaRouteSelector;
@@ -79,9 +77,6 @@ public class MainActivity extends AppCompatActivity {
 			setRequestedOrientation(SCREEN_ORIENTATION_PORTRAIT);
 
 		setContentView(R.layout.activity_main);
-
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
 
 		path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
 		path.setAdapter(new PhotoDirsSuggestionAdapter(this));
