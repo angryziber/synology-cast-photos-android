@@ -24,7 +24,7 @@
         <activity
             android:name="net.azib.photos.cast.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="@integer/orientation">
+            android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -6,6 +6,6 @@
          screen margins) for sw600dp devices (e.g. 7" tablets) here.
     -->
 
-    <integer name="orientation">4</integer> <!-- sensor -->
+    <bool name="portrait_only">false</bool>
 
 </resources>

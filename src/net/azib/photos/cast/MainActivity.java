@@ -47,6 +47,8 @@ import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
 
+import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+
 /**
  * Main activity to send messages to the receiver.
  */
@@ -72,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getResources().getBoolean(R.bool.portrait_only))
+			setRequestedOrientation(SCREEN_ORIENTATION_PORTRAIT);
+
 		setContentView(R.layout.activity_main);
 
 		ActionBar actionBar = getSupportActionBar();
