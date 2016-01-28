@@ -53,7 +53,7 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 public class MainActivity extends AppCompatActivity {
 	private static final String TAG = MainActivity.class.getSimpleName();
 
-	Switch randomSwitch;
+	Switch randomSwitch, styleSwitch;
 	AutoCompleteTextView path;
 
 	private MediaRouter mediaRouter;
@@ -111,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
 		randomSwitch.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
 				sendCommand(randomSwitch.isChecked() ? "rnd" : "seq");
+			}
+		});
+
+		styleSwitch = (Switch) findViewById(R.id.styleSwitch);
+		styleSwitch.setOnClickListener(new OnClickListener() {
+			@Override public void onClick(View v) {
+				sendCommand(styleSwitch.isChecked() ? "style:cover" : "style:contain");
 			}
 		});
 
