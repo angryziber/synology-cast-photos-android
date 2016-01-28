@@ -42,13 +42,15 @@
     <LinearLayout android:id="@+id/nav_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_below="@+id/castPhotosButton" android:layout_centerHorizontal="true">
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="&lt;&lt;"
-                android:id="@+id/prev_more_button" android:minWidth="80dp"/>
+                android:id="@+id/prev_more_button" android:minWidth="60dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:id="@+id/prev_button" android:text="&lt;" android:minWidth="80dp"/>
+                android:id="@+id/prev_button" android:text="&lt;" android:minWidth="75dp"/>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:id="@+id/pause_button" android:text="||" android:minWidth="60dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">"
-                android:id="@+id/next_button" android:minWidth="80dp"/>
+                android:id="@+id/next_button" android:minWidth="75dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">>"
-                android:id="@+id/next_more_button" android:minWidth="80dp"/>
+                android:id="@+id/next_more_button" android:minWidth="60dp"/>
     </LinearLayout>
 
     <LinearLayout android:id="@+id/mark_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"

@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
 		assignCommand(R.id.next_button, "next");
 		assignCommand(R.id.prev_button, "prev");
+		assignCommand(R.id.pause_button, "pause");
 		assignCommand(R.id.next_more_button, "next:10");
 		assignCommand(R.id.prev_more_button, "prev:10");
 		assignCommand(R.id.mark_delete_button, "mark:delete");
