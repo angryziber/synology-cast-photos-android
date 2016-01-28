@@ -44,6 +44,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
 		path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
 		path.setAdapter(new PhotoDirsSuggestionAdapter(this));
-//		path.setText(new SimpleDateFormat("yyyy").format(new Date()));
+		path.setText(new SimpleDateFormat("yyyy").format(new Date()));
 
 		Button castPhotosButton = (Button) findViewById(R.id.castPhotosButton);
 		castPhotosButton.setOnClickListener(new OnClickListener() {
