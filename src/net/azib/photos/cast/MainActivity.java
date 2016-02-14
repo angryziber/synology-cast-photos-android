@@ -27,9 +27,7 @@ import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
 import android.support.v7.media.MediaRouter.RouteInfo;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -70,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 	private ConnectionCallbacks connectionCallbacks;
 	private ConnectionFailedListener connectionFailedListener;
 	private CastChannel channel;
+	private GestureDetector gestureDetector;
 	private boolean started;
 	private boolean waitingForReconnect;
 	private String castSessionId;
@@ -117,6 +116,19 @@ public class MainActivity extends AppCompatActivity {
 		assignCommand(R.id.mark_4_button, "mark:4");
 		assignCommand(R.id.mark_5_button, "mark:5");
 
+		gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+			@Override public boolean onDown(MotionEvent e) {
+				return true;
+			}
+
+			@Override public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+				if (Math.abs(velocityX) < Math.abs(velocityY)) return false;
+				if (velocityX > 0) sendCommand("prev");
+				else sendCommand("next");
+				return true;
+			}
+		});
+
 		status = (TextView) findViewById(R.id.status);
 
 		randomSwitch = (Switch) findViewById(R.id.randomSwitch);
@@ -138,6 +150,11 @@ public class MainActivity extends AppCompatActivity {
 		mediaRouteSelector = new MediaRouteSelector.Builder()
 				.addControlCategory(CastMediaControlIntent.categoryForCast(getAppId())).build();
 		mediaRouterCallback = new MyMediaRouterCallback();
+	}
+
+	@Override public boolean onTouchEvent(MotionEvent event) {
+		gestureDetector.onTouchEvent(event);
+		return super.onTouchEvent(event);
 	}
 
 	private void assignCommand(int buttonId, final String command) {
