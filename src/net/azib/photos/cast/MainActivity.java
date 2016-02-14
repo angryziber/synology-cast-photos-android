@@ -16,6 +16,8 @@
 
 package net.azib.photos.cast;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,10 +30,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.*;
 import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.Cast.ApplicationConnectionResult;
@@ -47,6 +46,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.content.Intent.ACTION_VIEW;
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 
 /**
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
 	Switch randomSwitch, styleSwitch;
 	AutoCompleteTextView path;
+	TextView status;
 
 	private MediaRouter mediaRouter;
 	private MediaRouteSelector mediaRouteSelector;
@@ -108,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
 		assignCommand(R.id.mark_3_button, "mark:3");
 		assignCommand(R.id.mark_4_button, "mark:4");
 		assignCommand(R.id.mark_5_button, "mark:5");
+
+		status = (TextView) findViewById(R.id.status);
 
 		randomSwitch = (Switch) findViewById(R.id.randomSwitch);
 		randomSwitch.setOnClickListener(new OnClickListener() {
@@ -392,8 +395,18 @@ public class MainActivity extends AppCompatActivity {
 
 		@Override
 		public void onMessageReceived(CastDevice castDevice, String namespace, String message) {
-      Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 			Log.d(TAG, "onMessageReceived: " + message);
+
+			final String[] parts = message.split("\\|", 2);
+			status.setText(parts[0]);
+			if (parts.length == 2)
+				status.setOnClickListener(new OnClickListener() {
+					@Override public void onClick(View v) {
+						startActivity(new Intent(ACTION_VIEW, Uri.parse(parts[1])));
+					}
+				});
+			else
+				status.setClickable(false);
 		}
 	}
 }
