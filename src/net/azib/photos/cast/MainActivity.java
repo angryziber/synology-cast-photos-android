@@ -213,13 +213,10 @@ public class MainActivity extends AppCompatActivity {
 	private void launchReceiver() {
 		try {
 			castListener = new Cast.Listener() {
-
-				@Override
-				public void onApplicationDisconnected(int errorCode) {
+				@Override public void onApplicationDisconnected(int errorCode) {
 					Log.d(TAG, "application has stopped");
 					teardown();
 				}
-
 			};
 			// Connect to Google Play services
 			connectionCallbacks = new ConnectionCallbacks();
@@ -305,7 +302,6 @@ public class MainActivity extends AppCompatActivity {
 												} catch (IOException e) {
 													Log.e(TAG, "Exception while creating channel", e);
 												}
-												castPhotos();
 											} else {
 												Log.e(TAG, "application could not launch");
 												teardown();
