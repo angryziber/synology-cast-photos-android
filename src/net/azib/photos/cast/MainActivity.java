@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 	AutoCompleteTextView path;
 	TextView status;
 
-	PhotoCaster caster;
+	CastClient caster;
 	GestureDetector gestureDetector;
 
 	@Override
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
 		setContentView(R.layout.activity_main);
 
-		caster = new PhotoCaster(this);
+		caster = new CastClient(this);
 
 		path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
 		path.setAdapter(new PhotoDirsSuggestionAdapter(this));

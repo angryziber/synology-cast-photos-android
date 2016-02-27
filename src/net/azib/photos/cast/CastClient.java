@@ -16,8 +16,8 @@ import java.io.IOException;
 import static android.support.v7.media.MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY;
 import static com.google.android.gms.cast.CastMediaControlIntent.categoryForCast;
 
-public class PhotoCaster {
-  private static final String TAG = PhotoCaster.class.getSimpleName();
+public class CastClient {
+  private static final String TAG = CastClient.class.getSimpleName();
 
   final MainActivity activity;
   final NotificationWithControls notification;
@@ -33,7 +33,7 @@ public class PhotoCaster {
   private final MediaRouter mediaRouter;
   final MediaRouteSelector mediaRouteSelector;
 
-  public PhotoCaster(MainActivity activity) {
+  public CastClient(MainActivity activity) {
     this.activity = activity;
     notification = new NotificationWithControls(activity);
     appId = activity.getString(R.string.app_id);
