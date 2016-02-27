@@ -53,12 +53,11 @@ public class PhotoCaster {
 
   private class MediaRouterCallback extends MediaRouter.Callback {
     @Override public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
-      Log.d(TAG, "onRouteSelected");
       connect(CastDevice.getFromBundle(info.getExtras()));
     }
 
     @Override public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
-      Log.d(TAG, "onRouteUnselected: info=" + info);
+      stopReceiver();
       teardown();
     }
   }
@@ -83,7 +82,6 @@ public class PhotoCaster {
       if (started) {
         if (apiClient.isConnected() || apiClient.isConnecting()) {
           try {
-            Cast.CastApi.stopApplication(apiClient, castSessionId);
             Cast.CastApi.removeMessageReceivedCallbacks(apiClient, channel.getNamespace());
           } catch (IOException e) {
             Log.e(TAG, "Exception while removing channel", e);
@@ -173,6 +171,11 @@ public class PhotoCaster {
         }
       }
     });
+  }
+
+  private void stopReceiver() {
+    if (apiClient == null || castSessionId == null) return;
+    Cast.CastApi.stopApplication(apiClient, castSessionId);
   }
 
   private void registerChannel() {
