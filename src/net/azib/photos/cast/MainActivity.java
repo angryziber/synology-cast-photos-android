@@ -307,24 +307,13 @@ public class MainActivity extends AppCompatActivity {
 										public void onResult(
 												ApplicationConnectionResult result) {
 											Status status = result.getStatus();
-											Log.d(TAG,
-													"ApplicationConnectionResultCallback.onResult: statusCode"
-															+ status.getStatusCode());
+											Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + status.getStatusCode());
 											if (status.isSuccess()) {
 												ApplicationMetadata applicationMetadata = result.getApplicationMetadata();
 												castSessionId = result.getSessionId();
 												String applicationStatus = result.getApplicationStatus();
 												boolean wasLaunched = result.getWasLaunched();
-												Log.d(TAG,
-														"application name: "
-																+ applicationMetadata
-																.getName()
-																+ ", status: "
-																+ applicationStatus
-																+ ", sessionId: "
-																+ castSessionId
-																+ ", wasLaunched: "
-																+ wasLaunched);
+												Log.d(TAG, "application name: " + applicationMetadata.getName() + ", status: " + applicationStatus + ", sessionId: " + castSessionId + ", wasLaunched: " + wasLaunched);
 												started = true;
 
 												// Create the custom message
