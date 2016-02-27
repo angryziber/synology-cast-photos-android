@@ -26,7 +26,7 @@ public class PhotoCaster {
   private GoogleApiClient apiClient;
   private String castSessionId;
   private boolean started;
-  private boolean waitingForReconnect;
+  private boolean reconnecting;
 
   private final CastChannel channel = new CastChannel();
   private final MediaRouter.Callback mediaRouterCallback = new MediaRouterCallback();
@@ -92,8 +92,8 @@ public class PhotoCaster {
       }
       apiClient = null;
     }
-    waitingForReconnect = false;
     castSessionId = null;
+    reconnecting = false;
     notification.cancel();
   }
 
@@ -125,25 +125,20 @@ public class PhotoCaster {
   }
 
   private class ConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks {
-    @Override public void onConnected(Bundle connectionHint) {
+    @Override public void onConnected(Bundle hint) {
       Log.d(TAG, "onConnected");
-
-      // We got disconnected while this runnable was pending execution.
-      if (apiClient == null) return;
+      if (apiClient == null) return; // We got disconnected while this runnable was pending execution.
 
       try {
-        if (waitingForReconnect) {
-          waitingForReconnect = false;
-
-          // Check if the receiver app is still running
-          if (connectionHint != null && connectionHint.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
+        if (!reconnecting) launchReceiver();
+        else {
+          reconnecting = false;
+          if (hint != null && hint.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
             Log.d(TAG, "App is no longer running");
             teardown();
           } else {
             registerChannel();
           }
-        } else {
-          launchReceiver();
         }
       } catch (Exception e) {
         Log.e(TAG, "Failed to launch application", e);
@@ -152,7 +147,7 @@ public class PhotoCaster {
 
     @Override public void onConnectionSuspended(int cause) {
       Log.d(TAG, "onConnectionSuspended");
-      waitingForReconnect = true;
+      reconnecting = true;
     }
   }
 
