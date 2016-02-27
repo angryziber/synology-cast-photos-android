@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 	private boolean started;
 	private boolean waitingForReconnect;
 	private String castSessionId;
+  NotificationWithControls notification;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
 		mediaRouteSelector = new MediaRouteSelector.Builder()
 				.addControlCategory(CastMediaControlIntent.categoryForCast(getAppId())).build();
 		mediaRouterCallback = new MyMediaRouterCallback();
+
+    notification = new NotificationWithControls(this);
 	}
 
 	@Override public boolean onTouchEvent(MotionEvent event) {
@@ -385,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
 		selectedDevice = null;
 		waitingForReconnect = false;
 		castSessionId = null;
+    notification.cancel();
 	}
 
 	private void sendCommand(String message) {
@@ -422,6 +426,7 @@ public class MainActivity extends AppCompatActivity {
 
 			final String[] parts = message.split("\\|", 2);
 			status.setText(parts[0]);
+      notification.notify(parts[0]);
 			if (parts.length == 2)
 				status.setOnClickListener(new OnClickListener() {
 					@Override public void onClick(View v) {
