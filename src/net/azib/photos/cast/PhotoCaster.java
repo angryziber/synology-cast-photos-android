@@ -147,12 +147,7 @@ public class PhotoCaster {
             Log.d(TAG, "App is no longer running");
             teardown();
           } else {
-            // Re-create the custom message channel
-            try {
-              Cast.CastApi.setMessageReceivedCallbacks(apiClient, channel.getNamespace(), channel);
-            } catch (IOException e) {
-              Log.e(TAG, "Exception while creating channel", e);
-            }
+            registerChannel();
           }
         } else {
           // Launch the receiver app
@@ -164,11 +159,7 @@ public class PhotoCaster {
                 Log.d(TAG, "application name: " + result.getApplicationMetadata().getName() + ", status: " + result.getApplicationStatus() + ", sessionId: " + castSessionId + ", wasLaunched: " + result.getWasLaunched());
                 started = true;
                 channel = new CastChannel();
-                try {
-                  Cast.CastApi.setMessageReceivedCallbacks(apiClient, channel.getNamespace(), channel);
-                } catch (IOException e) {
-                  Log.e(TAG, "Exception while creating channel", e);
-                }
+                registerChannel();
               } else {
                 Log.e(TAG, "application could not launch");
                 teardown();
@@ -178,6 +169,14 @@ public class PhotoCaster {
         }
       } catch (Exception e) {
         Log.e(TAG, "Failed to launch application", e);
+      }
+    }
+
+    void registerChannel() {
+      try {
+        Cast.CastApi.setMessageReceivedCallbacks(apiClient, channel.getNamespace(), channel);
+      } catch (IOException e) {
+        Log.e(TAG, "Exception while creating channel", e);
       }
     }
 
