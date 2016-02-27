@@ -61,13 +61,10 @@ public class PhotoCaster {
         }
       };
       // Connect to Google Play services
-      ConnectionCallbacks connectionCallbacks = new ConnectionCallbacks();
-      ConnectionFailedListener connectionFailedListener = new ConnectionFailedListener();
-      Cast.CastOptions.Builder apiOptionsBuilder = Cast.CastOptions.builder(selectedDevice, castListener);
       apiClient = new GoogleApiClient.Builder(activity)
-          .addApi(Cast.API, apiOptionsBuilder.build())
-          .addConnectionCallbacks(connectionCallbacks)
-          .addOnConnectionFailedListener(connectionFailedListener)
+          .addApi(Cast.API, Cast.CastOptions.builder(selectedDevice, castListener).build())
+          .addConnectionCallbacks(new ConnectionCallbacks())
+          .addOnConnectionFailedListener(new ConnectionFailedListener())
           .build();
 
       apiClient.connect();
