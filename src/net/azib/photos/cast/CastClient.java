@@ -19,7 +19,7 @@ import static com.google.android.gms.cast.CastMediaControlIntent.categoryForCast
 public class CastClient {
   private static final String TAG = CastClient.class.getSimpleName();
 
-  final MainActivity activity;
+  MainActivity activity;
   final NotificationWithControls notification;
   final String appId;
 

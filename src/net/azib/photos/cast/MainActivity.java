@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 	AutoCompleteTextView path;
 	TextView status;
 
-	CastClient caster;
+	static CastClient cast;
 	GestureDetector gestureDetector;
 
 	@Override
@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
 		setContentView(R.layout.activity_main);
 
-		caster = new CastClient(this);
+		if (cast == null) cast = new CastClient(this);
+		else cast.activity = this;
 
 		path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
 		path.setAdapter(new PhotoDirsSuggestionAdapter(this));
@@ -77,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
 			@Override public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 				if (Math.abs(velocityX) < Math.abs(velocityY)) return false;
-				if (velocityX > 0) caster.sendCommand("prev");
-				else caster.sendCommand("next");
+				if (velocityX > 0) cast.sendCommand("prev");
+				else cast.sendCommand("next");
 				return true;
 			}
 		});
@@ -88,19 +89,19 @@ public class MainActivity extends AppCompatActivity {
 		randomSwitch = (Switch) findViewById(R.id.randomSwitch);
 		randomSwitch.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
-				caster.sendCommand(randomSwitch.isChecked() ? "rnd" : "seq");
+				cast.sendCommand(randomSwitch.isChecked() ? "rnd" : "seq");
 			}
 		});
 
 		styleSwitch = (Switch) findViewById(R.id.styleSwitch);
 		styleSwitch.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View v) {
-				caster.sendCommand(styleSwitch.isChecked() ? "style:cover" : "style:contain");
+				cast.sendCommand(styleSwitch.isChecked() ? "style:cover" : "style:contain");
 			}
 		});
 
 		String command = getIntent().getStringExtra("command");
-		if (command != null) caster.sendCommand(command);
+		if (command != null) cast.sendCommand(command);
 	}
 
 	@Override protected void onSaveInstanceState(Bundle state) {
@@ -117,13 +118,13 @@ public class MainActivity extends AppCompatActivity {
 		Button button = (Button) findViewById(buttonId);
 		button.setOnClickListener(new OnClickListener() {
 			@Override public void onClick(View view) {
-				caster.sendCommand(command);
+				cast.sendCommand(command);
 			}
 		});
 	}
 
 	private void castPhotos() {
-    caster.sendCommand((randomSwitch.isChecked() ? "rnd:" : "seq:") + path.getText());
+    cast.sendCommand((randomSwitch.isChecked() ? "rnd:" : "seq:") + path.getText());
 		path.clearFocus();
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(path.getWindowToken(), 0);
@@ -131,17 +132,12 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override protected void onResume() {
 		super.onResume();
-		caster.startDiscovery();
+		cast.startDiscovery();
 	}
 
 	@Override protected void onPause() {
-		if (isFinishing()) caster.stopDiscovery();
+		if (isFinishing()) cast.stopDiscovery();
 		super.onPause();
-	}
-
-	@Override public void onDestroy() {
-		caster.teardown();
-		super.onDestroy();
 	}
 
 	@Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -150,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 		MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
 		MediaRouteActionProvider mediaRouteActionProvider = (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
 		// Set the MediaRouteActionProvider selector for device discovery.
-		mediaRouteActionProvider.setRouteSelector(caster.mediaRouteSelector);
+		mediaRouteActionProvider.setRouteSelector(cast.mediaRouteSelector);
 		return true;
 	}
 
