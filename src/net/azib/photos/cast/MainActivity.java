@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
 	GestureDetector gestureDetector;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onCreate(Bundle state) {
+		super.onCreate(state);
 
 		if (getResources().getBoolean(R.bool.portrait_only))
 			setRequestedOrientation(SCREEN_ORIENTATION_PORTRAIT);
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
 		path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
 		path.setAdapter(new PhotoDirsSuggestionAdapter(this));
-		path.setText(new SimpleDateFormat("yyyy").format(new Date()));
+		path.setText(state.getString("path", new SimpleDateFormat("yyyy").format(new Date())));
 		path.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				castPhotos();
@@ -101,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
 
 		String command = getIntent().getStringExtra("command");
 		if (command != null) caster.sendCommand(command);
+	}
+
+	@Override protected void onSaveInstanceState(Bundle state) {
+		super.onSaveInstanceState(state);
+		state.putString("path", path.getText().toString());
 	}
 
 	@Override public boolean onTouchEvent(MotionEvent event) {
