@@ -5,13 +5,11 @@ import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
 import android.util.Log;
 import android.widget.Toast;
-import com.google.android.gms.cast.ApplicationMetadata;
 import com.google.android.gms.cast.Cast;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
 
@@ -80,7 +78,7 @@ public class PhotoCaster {
     Log.d(TAG, "teardown");
     if (apiClient != null) {
       if (started) {
-        if (apiClient.isConnected()  || apiClient.isConnecting()) {
+        if (apiClient.isConnected() || apiClient.isConnecting()) {
           try {
             Cast.CastApi.stopApplication(apiClient, castSessionId);
             if (channel != null) {
@@ -145,7 +143,7 @@ public class PhotoCaster {
           waitingForReconnect = false;
 
           // Check if the receiver app is still running
-          if ((connectionHint != null) && connectionHint.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
+          if (connectionHint != null && connectionHint.getBoolean(Cast.EXTRA_APP_NO_LONGER_RUNNING)) {
             Log.d(TAG, "App is no longer running");
             teardown();
           } else {
@@ -160,18 +158,11 @@ public class PhotoCaster {
           // Launch the receiver app
           Cast.CastApi.launchApplication(apiClient, getAppId(), false).setResultCallback(new ResultCallback<Cast.ApplicationConnectionResult>() {
             @Override public void onResult(Cast.ApplicationConnectionResult result) {
-              Status status = result.getStatus();
-              Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + status.getStatusCode());
-              if (status.isSuccess()) {
-                ApplicationMetadata applicationMetadata = result.getApplicationMetadata();
+              Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + result.getStatus().getStatusCode());
+              if (result.getStatus().isSuccess()) {
                 castSessionId = result.getSessionId();
-                String applicationStatus = result.getApplicationStatus();
-                boolean wasLaunched = result.getWasLaunched();
-                Log.d(TAG, "application name: " + applicationMetadata.getName() + ", status: " + applicationStatus + ", sessionId: " + castSessionId + ", wasLaunched: " + wasLaunched);
+                Log.d(TAG, "application name: " + result.getApplicationMetadata().getName() + ", status: " + result.getApplicationStatus() + ", sessionId: " + castSessionId + ", wasLaunched: " + result.getWasLaunched());
                 started = true;
-
-                // Create the custom message
-                // channel
                 channel = new CastChannel();
                 try {
                   Cast.CastApi.setMessageReceivedCallbacks(apiClient, channel.getNamespace(), channel);
@@ -217,19 +208,7 @@ public class PhotoCaster {
 
   void sendCommand(String message) {
     if (apiClient != null && channel != null) {
-      try {
-        Cast.CastApi.sendMessage(apiClient,
-            channel.getNamespace(), message)
-            .setResultCallback(new ResultCallback<Status>() {
-              @Override public void onResult(Status result) {
-                if (!result.isSuccess()) {
-                  Log.e(TAG, "Sending message failed");
-                }
-              }
-            });
-      } catch (Exception e) {
-        Log.e(TAG, "Exception while sending message", e);
-      }
+      Cast.CastApi.sendMessage(apiClient, channel.getNamespace(), message);
     } else {
       Toast.makeText(activity, "Chromecast not connected", Toast.LENGTH_SHORT).show();
     }
