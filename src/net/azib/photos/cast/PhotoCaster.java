@@ -46,9 +46,6 @@ public class PhotoCaster {
     return activity.getString(R.string.app_id);
   }
 
-  /**
-   * Start the receiver app
-   */
   private void launchReceiver() {
     try {
       Cast.Listener castListener = new Cast.Listener() {
@@ -181,9 +178,6 @@ public class PhotoCaster {
     }
   }
 
-  /**
-   * Callback for MediaRouter events
-   */
   class MediaRouterCallback extends MediaRouter.Callback {
     @Override public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
       Log.d(TAG, "onRouteSelected");
