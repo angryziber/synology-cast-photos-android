@@ -93,12 +93,11 @@ public class PhotoCaster {
     notification.cancel();
   }
 
-  void onPause() {
+  void stopDiscovery() {
     mediaRouter.removeCallback(mediaRouterCallback);
   }
 
-  void onResume() {
-    // Start media router discovery
+  void startDiscovery() {
     mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_REQUEST_DISCOVERY);
   }
 

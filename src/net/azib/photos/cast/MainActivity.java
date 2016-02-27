@@ -126,11 +126,11 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override protected void onResume() {
 		super.onResume();
-		caster.onResume();
+		caster.startDiscovery();
 	}
 
 	@Override protected void onPause() {
-		if (isFinishing()) caster.onPause();
+		if (isFinishing()) caster.stopDiscovery();
 		super.onPause();
 	}
 
