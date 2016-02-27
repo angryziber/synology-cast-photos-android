@@ -23,7 +23,6 @@ public class PhotoCaster {
   final NotificationWithControls notification;
 
   private GoogleApiClient apiClient;
-  private CastDevice selectedDevice;
   private boolean started;
   private boolean waitingForReconnect;
   private String castSessionId;
@@ -46,24 +45,17 @@ public class PhotoCaster {
     return activity.getString(R.string.app_id);
   }
 
-  private void launchReceiver() {
+  void connect(CastDevice device) {
     try {
-      Cast.Listener castListener = new Cast.Listener() {
-        @Override public void onApplicationDisconnected(int errorCode) {
-          Log.d(TAG, "application has stopped");
-          teardown();
-        }
-      };
-      // Connect to Google Play services
       apiClient = new GoogleApiClient.Builder(activity)
-          .addApi(Cast.API, Cast.CastOptions.builder(selectedDevice, castListener).build())
+          .addApi(Cast.API, Cast.CastOptions.builder(device, new DisconnectListener()).build())
           .addConnectionCallbacks(new ConnectionCallbacks())
           .addOnConnectionFailedListener(new ConnectionFailedListener())
           .build();
 
       apiClient.connect();
     } catch (Exception e) {
-      Log.e(TAG, "Failed launchReceiver", e);
+      Log.e(TAG, "Failed connect", e);
     }
   }
 
@@ -87,7 +79,6 @@ public class PhotoCaster {
       }
       apiClient = null;
     }
-    selectedDevice = null;
     waitingForReconnect = false;
     castSessionId = null;
     notification.cancel();
@@ -108,6 +99,13 @@ public class PhotoCaster {
     }
   }
 
+  class DisconnectListener extends Cast.Listener {
+    @Override public void onApplicationDisconnected(int errorCode) {
+      Log.d(TAG, "application has stopped");
+      teardown();
+    }
+  };
+
   class CastChannel implements Cast.MessageReceivedCallback {
     public String getNamespace() {
       return activity.getString(R.string.namespace);
@@ -125,10 +123,8 @@ public class PhotoCaster {
     @Override public void onConnected(Bundle connectionHint) {
       Log.d(TAG, "onConnected");
 
-      if (apiClient == null) {
-        // We got disconnected while this runnable was pending execution.
-        return;
-      }
+      // We got disconnected while this runnable was pending execution.
+      if (apiClient == null) return;
 
       try {
         if (waitingForReconnect) {
@@ -180,16 +176,12 @@ public class PhotoCaster {
   class MediaRouterCallback extends MediaRouter.Callback {
     @Override public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
       Log.d(TAG, "onRouteSelected");
-      // Handle the user route selection.
-      selectedDevice = CastDevice.getFromBundle(info.getExtras());
-
-      launchReceiver();
+      connect(CastDevice.getFromBundle(info.getExtras()));
     }
 
     @Override public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
       Log.d(TAG, "onRouteUnselected: info=" + info);
       teardown();
-      selectedDevice = null;
     }
   }
 
