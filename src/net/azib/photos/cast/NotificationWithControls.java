@@ -44,4 +44,8 @@ public class NotificationWithControls {
     Notification notification = builder.build();
     notificationManager.notify(1, notification);
   }
+
+  public void cancel() {
+    notificationManager.cancelAll();
+  }
 }
