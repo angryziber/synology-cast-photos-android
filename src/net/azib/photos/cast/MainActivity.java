@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
 		path = (AutoCompleteTextView) findViewById(R.id.photosPathEdit);
 		path.setAdapter(new PhotoDirsSuggestionAdapter(this));
-		path.setText(state.getString("path", new SimpleDateFormat("yyyy").format(new Date())));
+		path.setText(state != null ? state.getString("path") : new SimpleDateFormat("yyyy").format(new Date()));
 		path.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				castPhotos();
