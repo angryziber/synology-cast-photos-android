@@ -153,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
 		mediaRouterCallback = new MyMediaRouterCallback();
 
     notification = new NotificationWithControls(this);
+
+		String command = getIntent().getStringExtra("command");
+		if (command != null) sendCommand(command);
 	}
 
 	@Override public boolean onTouchEvent(MotionEvent event) {

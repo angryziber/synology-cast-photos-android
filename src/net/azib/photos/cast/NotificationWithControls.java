@@ -13,18 +13,22 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class NotificationWithControls {
   MainActivity activity;
   NotificationManager notificationManager;
+  Intent open, prev, pause, next;
 
   public NotificationWithControls(MainActivity activity) {
     this.activity = activity;
     notificationManager = (NotificationManager) activity.getSystemService(NOTIFICATION_SERVICE);
+
+    open = new Intent(activity, activity.getClass());
+    prev = new Intent(open).putExtra("command", "prev");
+    pause = new Intent(open).putExtra("command", "pause");
+    next = new Intent(open).putExtra("command", "next");
   }
 
   public void notify(String text) {
-    Intent resultIntent = new Intent(activity, activity.getClass());
-
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(activity);
     stackBuilder.addParentStack(MainActivity.class);
-    stackBuilder.addNextIntent(resultIntent);
+    stackBuilder.addNextIntent(open);
 
     PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -35,9 +39,9 @@ public class NotificationWithControls {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       builder.setVisibility(VISIBILITY_PUBLIC);
-      builder.addAction(android.R.drawable.ic_media_previous, "Previous", resultPendingIntent);
-      builder.addAction(android.R.drawable.ic_media_pause, "Pause", resultPendingIntent);
-      builder.addAction(android.R.drawable.ic_media_next, "Next", resultPendingIntent);
+      builder.addAction(android.R.drawable.ic_media_previous, "Previous", PendingIntent.getActivity(activity, 0, prev, 0));
+      builder.addAction(android.R.drawable.ic_media_pause, "Pause", PendingIntent.getActivity(activity, 0, pause, 0));
+      builder.addAction(android.R.drawable.ic_media_next, "Next", PendingIntent.getActivity(activity, 0, next, 0));
       builder.setStyle(new Notification.MediaStyle().setShowActionsInCompactView(0, 1, 2));
     }
 
