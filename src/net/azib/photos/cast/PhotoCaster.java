@@ -19,28 +19,27 @@ import static com.google.android.gms.cast.CastMediaControlIntent.categoryForCast
 public class PhotoCaster {
   private static final String TAG = PhotoCaster.class.getSimpleName();
 
-  MainActivity activity;
-  NotificationWithControls notification;
+  final MainActivity activity;
+  final NotificationWithControls notification;
 
   private GoogleApiClient apiClient;
-  private MediaRouter mediaRouter;
-  MediaRouteSelector mediaRouteSelector;
-  private MediaRouter.Callback mediaRouterCallback;
   private CastDevice selectedDevice;
-  private CastChannel channel;
   private boolean started;
   private boolean waitingForReconnect;
   private String castSessionId;
 
+  private final CastChannel channel = new CastChannel();
+  private final MediaRouter.Callback mediaRouterCallback = new MediaRouterCallback();
+  private final MediaRouter mediaRouter;
+  final MediaRouteSelector mediaRouteSelector;
+
   public PhotoCaster(MainActivity activity) {
     this.activity = activity;
+    notification = new NotificationWithControls(activity);
 
     // Configure Cast device discovery
     mediaRouter = MediaRouter.getInstance(activity.getApplicationContext());
     mediaRouteSelector = new MediaRouteSelector.Builder().addControlCategory(categoryForCast(getAppId())).build();
-    mediaRouterCallback = new MediaRouterCallback();
-
-    notification = new NotificationWithControls(activity);
   }
 
   String getAppId() {
@@ -81,10 +80,7 @@ public class PhotoCaster {
         if (apiClient.isConnected() || apiClient.isConnecting()) {
           try {
             Cast.CastApi.stopApplication(apiClient, castSessionId);
-            if (channel != null) {
-              Cast.CastApi.removeMessageReceivedCallbacks(apiClient, channel.getNamespace());
-              channel = null;
-            }
+            Cast.CastApi.removeMessageReceivedCallbacks(apiClient, channel.getNamespace());
           } catch (IOException e) {
             Log.e(TAG, "Exception while removing channel", e);
           }
@@ -158,7 +154,6 @@ public class PhotoCaster {
                 castSessionId = result.getSessionId();
                 Log.d(TAG, "application name: " + result.getApplicationMetadata().getName() + ", status: " + result.getApplicationStatus() + ", sessionId: " + castSessionId + ", wasLaunched: " + result.getWasLaunched());
                 started = true;
-                channel = new CastChannel();
                 registerChannel();
               } else {
                 Log.e(TAG, "application could not launch");
@@ -206,7 +201,7 @@ public class PhotoCaster {
   }
 
   void sendCommand(String message) {
-    if (apiClient != null && channel != null) {
+    if (apiClient != null) {
       Cast.CastApi.sendMessage(apiClient, channel.getNamespace(), message);
     } else {
       Toast.makeText(activity, "Chromecast not connected", Toast.LENGTH_SHORT).show();
