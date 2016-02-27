@@ -43,15 +43,15 @@ public class PhotoCaster {
     mediaRouteSelector = new MediaRouteSelector.Builder().addControlCategory(categoryForCast(appId)).build();
   }
 
-  void startDiscovery() {
+  public void startDiscovery() {
     mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_REQUEST_DISCOVERY);
   }
 
-  void stopDiscovery() {
+  public void stopDiscovery() {
     mediaRouter.removeCallback(mediaRouterCallback);
   }
 
-  class MediaRouterCallback extends MediaRouter.Callback {
+  private class MediaRouterCallback extends MediaRouter.Callback {
     @Override public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
       Log.d(TAG, "onRouteSelected");
       connect(CastDevice.getFromBundle(info.getExtras()));
@@ -63,7 +63,7 @@ public class PhotoCaster {
     }
   }
 
-  void connect(CastDevice device) {
+  private void connect(CastDevice device) {
     try {
       apiClient = new GoogleApiClient.Builder(activity)
           .addApi(Cast.API, Cast.CastOptions.builder(device, new DisconnectListener()).build())
@@ -77,9 +77,6 @@ public class PhotoCaster {
     }
   }
 
-  /**
-   * Tear down the connection to the receiver
-   */
   void teardown() {
     Log.d(TAG, "teardown");
     if (apiClient != null) {
@@ -102,21 +99,21 @@ public class PhotoCaster {
     notification.cancel();
   }
 
-  class ConnectionFailedListener implements GoogleApiClient.OnConnectionFailedListener {
+  private class ConnectionFailedListener implements GoogleApiClient.OnConnectionFailedListener {
     @Override public void onConnectionFailed(ConnectionResult result) {
       Log.e(TAG, "onConnectionFailed ");
       teardown();
     }
   }
 
-  class DisconnectListener extends Cast.Listener {
+  private class DisconnectListener extends Cast.Listener {
     @Override public void onApplicationDisconnected(int errorCode) {
       Log.d(TAG, "application has stopped");
       teardown();
     }
   };
 
-  class CastChannel implements Cast.MessageReceivedCallback {
+  private class CastChannel implements Cast.MessageReceivedCallback {
     public String getNamespace() {
       return activity.getString(R.string.namespace);
     }
@@ -129,7 +126,7 @@ public class PhotoCaster {
     }
   }
 
-  class ConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks {
+  private class ConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks {
     @Override public void onConnected(Bundle connectionHint) {
       Log.d(TAG, "onConnected");
 
@@ -155,34 +152,34 @@ public class PhotoCaster {
       }
     }
 
-    private void launchReceiver() {
-      Cast.CastApi.launchApplication(apiClient, appId, false).setResultCallback(new ResultCallback<Cast.ApplicationConnectionResult>() {
-        @Override public void onResult(Cast.ApplicationConnectionResult result) {
-          Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + result.getStatus().getStatusCode());
-          if (result.getStatus().isSuccess()) {
-            castSessionId = result.getSessionId();
-            Log.d(TAG, "application name: " + result.getApplicationMetadata().getName() + ", status: " + result.getApplicationStatus() + ", sessionId: " + castSessionId + ", wasLaunched: " + result.getWasLaunched());
-            started = true;
-            registerChannel();
-          } else {
-            Log.e(TAG, "application could not launch");
-            teardown();
-          }
-        }
-      });
-    }
-
-    void registerChannel() {
-      try {
-        Cast.CastApi.setMessageReceivedCallbacks(apiClient, channel.getNamespace(), channel);
-      } catch (IOException e) {
-        Log.e(TAG, "Exception while creating channel", e);
-      }
-    }
-
     @Override public void onConnectionSuspended(int cause) {
       Log.d(TAG, "onConnectionSuspended");
       waitingForReconnect = true;
+    }
+  }
+
+  private void launchReceiver() {
+    Cast.CastApi.launchApplication(apiClient, appId, false).setResultCallback(new ResultCallback<Cast.ApplicationConnectionResult>() {
+      @Override public void onResult(Cast.ApplicationConnectionResult result) {
+        Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + result.getStatus().getStatusCode());
+        if (result.getStatus().isSuccess()) {
+          castSessionId = result.getSessionId();
+          Log.d(TAG, "application name: " + result.getApplicationMetadata().getName() + ", status: " + result.getApplicationStatus() + ", sessionId: " + castSessionId + ", wasLaunched: " + result.getWasLaunched());
+          started = true;
+          registerChannel();
+        } else {
+          Log.e(TAG, "application could not launch");
+          teardown();
+        }
+      }
+    });
+  }
+
+  private void registerChannel() {
+    try {
+      Cast.CastApi.setMessageReceivedCallbacks(apiClient, channel.getNamespace(), channel);
+    } catch (IOException e) {
+      Log.e(TAG, "Exception while creating channel", e);
     }
   }
 
