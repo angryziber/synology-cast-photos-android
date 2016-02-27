@@ -21,6 +21,7 @@ public class PhotoCaster {
 
   final MainActivity activity;
   final NotificationWithControls notification;
+  final String appId;
 
   private GoogleApiClient apiClient;
   private String castSessionId;
@@ -35,14 +36,31 @@ public class PhotoCaster {
   public PhotoCaster(MainActivity activity) {
     this.activity = activity;
     notification = new NotificationWithControls(activity);
+    appId = activity.getString(R.string.app_id);
 
     // Configure Cast device discovery
     mediaRouter = MediaRouter.getInstance(activity.getApplicationContext());
-    mediaRouteSelector = new MediaRouteSelector.Builder().addControlCategory(categoryForCast(getAppId())).build();
+    mediaRouteSelector = new MediaRouteSelector.Builder().addControlCategory(categoryForCast(appId)).build();
   }
 
-  String getAppId() {
-    return activity.getString(R.string.app_id);
+  void startDiscovery() {
+    mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_REQUEST_DISCOVERY);
+  }
+
+  void stopDiscovery() {
+    mediaRouter.removeCallback(mediaRouterCallback);
+  }
+
+  class MediaRouterCallback extends MediaRouter.Callback {
+    @Override public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
+      Log.d(TAG, "onRouteSelected");
+      connect(CastDevice.getFromBundle(info.getExtras()));
+    }
+
+    @Override public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
+      Log.d(TAG, "onRouteUnselected: info=" + info);
+      teardown();
+    }
   }
 
   void connect(CastDevice device) {
@@ -82,14 +100,6 @@ public class PhotoCaster {
     waitingForReconnect = false;
     castSessionId = null;
     notification.cancel();
-  }
-
-  void stopDiscovery() {
-    mediaRouter.removeCallback(mediaRouterCallback);
-  }
-
-  void startDiscovery() {
-    mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_REQUEST_DISCOVERY);
   }
 
   class ConnectionFailedListener implements GoogleApiClient.OnConnectionFailedListener {
@@ -146,7 +156,7 @@ public class PhotoCaster {
     }
 
     private void launchReceiver() {
-      Cast.CastApi.launchApplication(apiClient, getAppId(), false).setResultCallback(new ResultCallback<Cast.ApplicationConnectionResult>() {
+      Cast.CastApi.launchApplication(apiClient, appId, false).setResultCallback(new ResultCallback<Cast.ApplicationConnectionResult>() {
         @Override public void onResult(Cast.ApplicationConnectionResult result) {
           Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + result.getStatus().getStatusCode());
           if (result.getStatus().isSuccess()) {
@@ -176,19 +186,7 @@ public class PhotoCaster {
     }
   }
 
-  class MediaRouterCallback extends MediaRouter.Callback {
-    @Override public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
-      Log.d(TAG, "onRouteSelected");
-      connect(CastDevice.getFromBundle(info.getExtras()));
-    }
-
-    @Override public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
-      Log.d(TAG, "onRouteUnselected: info=" + info);
-      teardown();
-    }
-  }
-
-  void sendCommand(String message) {
+  public void sendCommand(String message) {
     if (apiClient != null) {
       Cast.CastApi.sendMessage(apiClient, channel.getNamespace(), message);
     } else {
