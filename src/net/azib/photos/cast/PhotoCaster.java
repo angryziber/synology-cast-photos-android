@@ -25,7 +25,7 @@ public class PhotoCaster {
 
   private GoogleApiClient apiClient;
   private String castSessionId;
-  private boolean started;
+  private boolean receiverStarted;
   private boolean reconnecting;
 
   private final CastChannel channel = new CastChannel();
@@ -57,7 +57,7 @@ public class PhotoCaster {
     }
 
     @Override public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
-      stopReceiver();
+      if (receiverStarted) stopReceiver();
       teardown();
     }
   }
@@ -78,21 +78,14 @@ public class PhotoCaster {
 
   void teardown() {
     Log.d(TAG, "teardown");
-    if (apiClient != null) {
-      if (started) {
-        if (apiClient.isConnected() || apiClient.isConnecting()) {
-          try {
-            Cast.CastApi.removeMessageReceivedCallbacks(apiClient, channel.getNamespace());
-          } catch (IOException e) {
-            Log.e(TAG, "Exception while removing channel", e);
-          }
-          apiClient.disconnect();
-        }
-        started = false;
-      }
-      apiClient = null;
+    if (apiClient == null) return;
+    if (receiverStarted && (apiClient.isConnected() || apiClient.isConnecting())) {
+      channel.unregister();
+      apiClient.disconnect();
     }
+    apiClient = null;
     castSessionId = null;
+    receiverStarted = false;
     reconnecting = false;
     notification.cancel();
   }
@@ -122,6 +115,22 @@ public class PhotoCaster {
       notification.notify(parts[0]);
       activity.onMessageReceived(parts);
     }
+
+    void register() {
+      try {
+        Cast.CastApi.setMessageReceivedCallbacks(apiClient, getNamespace(), channel);
+      } catch (IOException e) {
+        Log.e(TAG, "Exception while creating channel", e);
+      }
+    }
+
+    void unregister() {
+      try {
+        Cast.CastApi.removeMessageReceivedCallbacks(apiClient, getNamespace());
+      } catch (IOException e) {
+        Log.e(TAG, "Exception while removing channel", e);
+      }
+    }
   }
 
   private class ConnectionCallbacks implements GoogleApiClient.ConnectionCallbacks {
@@ -137,7 +146,7 @@ public class PhotoCaster {
             Log.d(TAG, "App is no longer running");
             teardown();
           } else {
-            registerChannel();
+            channel.register();
           }
         }
       } catch (Exception e) {
@@ -158,8 +167,8 @@ public class PhotoCaster {
         if (result.getStatus().isSuccess()) {
           castSessionId = result.getSessionId();
           Log.d(TAG, "application name: " + result.getApplicationMetadata().getName() + ", status: " + result.getApplicationStatus() + ", sessionId: " + castSessionId + ", wasLaunched: " + result.getWasLaunched());
-          started = true;
-          registerChannel();
+          receiverStarted = true;
+          channel.register();
         } else {
           Log.e(TAG, "application could not launch");
           teardown();
@@ -171,14 +180,6 @@ public class PhotoCaster {
   private void stopReceiver() {
     if (apiClient == null || castSessionId == null) return;
     Cast.CastApi.stopApplication(apiClient, castSessionId);
-  }
-
-  private void registerChannel() {
-    try {
-      Cast.CastApi.setMessageReceivedCallbacks(apiClient, channel.getNamespace(), channel);
-    } catch (IOException e) {
-      Log.e(TAG, "Exception while creating channel", e);
-    }
   }
 
   public void sendCommand(String message) {
