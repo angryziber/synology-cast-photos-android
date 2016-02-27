@@ -15,7 +15,6 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 public class PhotoDirsSuggestionAdapter extends ArrayAdapter<String> {
-//    protected static final String TAG = "SuggestionAdapter";
     private List<String> suggestions;
 
     public PhotoDirsSuggestionAdapter(Activity context) {
