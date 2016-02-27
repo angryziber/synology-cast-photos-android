@@ -23,9 +23,9 @@ public class PhotoCaster {
   final NotificationWithControls notification;
 
   private GoogleApiClient apiClient;
+  private String castSessionId;
   private boolean started;
   private boolean waitingForReconnect;
-  private String castSessionId;
 
   private final CastChannel channel = new CastChannel();
   private final MediaRouter.Callback mediaRouterCallback = new MediaRouterCallback();
@@ -138,25 +138,28 @@ public class PhotoCaster {
             registerChannel();
           }
         } else {
-          // Launch the receiver app
-          Cast.CastApi.launchApplication(apiClient, getAppId(), false).setResultCallback(new ResultCallback<Cast.ApplicationConnectionResult>() {
-            @Override public void onResult(Cast.ApplicationConnectionResult result) {
-              Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + result.getStatus().getStatusCode());
-              if (result.getStatus().isSuccess()) {
-                castSessionId = result.getSessionId();
-                Log.d(TAG, "application name: " + result.getApplicationMetadata().getName() + ", status: " + result.getApplicationStatus() + ", sessionId: " + castSessionId + ", wasLaunched: " + result.getWasLaunched());
-                started = true;
-                registerChannel();
-              } else {
-                Log.e(TAG, "application could not launch");
-                teardown();
-              }
-            }
-          });
+          launchReceiver();
         }
       } catch (Exception e) {
         Log.e(TAG, "Failed to launch application", e);
       }
+    }
+
+    private void launchReceiver() {
+      Cast.CastApi.launchApplication(apiClient, getAppId(), false).setResultCallback(new ResultCallback<Cast.ApplicationConnectionResult>() {
+        @Override public void onResult(Cast.ApplicationConnectionResult result) {
+          Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode" + result.getStatus().getStatusCode());
+          if (result.getStatus().isSuccess()) {
+            castSessionId = result.getSessionId();
+            Log.d(TAG, "application name: " + result.getApplicationMetadata().getName() + ", status: " + result.getApplicationStatus() + ", sessionId: " + castSessionId + ", wasLaunched: " + result.getWasLaunched());
+            started = true;
+            registerChannel();
+          } else {
+            Log.e(TAG, "application could not launch");
+            teardown();
+          }
+        }
+      });
     }
 
     void registerChannel() {
