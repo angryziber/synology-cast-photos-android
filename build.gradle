@@ -1,9 +1,11 @@
 buildscript {
+    ext.kotlin_version = '1.0.0'
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.1'
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -12,6 +14,7 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 22
@@ -40,4 +43,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:mediarouter-v7:22.2.0'
     compile 'com.google.android.gms:play-services:7.5.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
