@@ -99,8 +99,11 @@ public class MainActivity extends AppCompatActivity {
 				cast.sendCommand(styleSwitch.isChecked() ? "style:cover" : "style:contain");
 			}
 		});
+	}
 
-		String command = getIntent().getStringExtra("command");
+	@Override protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		String command = intent.getAction();
 		if (command != null) cast.sendCommand(command);
 	}
 

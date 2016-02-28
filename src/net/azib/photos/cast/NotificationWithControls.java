@@ -20,9 +20,9 @@ public class NotificationWithControls {
     notificationManager = (NotificationManager) activity.getSystemService(NOTIFICATION_SERVICE);
 
     open = new Intent(activity, activity.getClass());
-    prev = new Intent(open).putExtra("command", "prev");
-    pause = new Intent(open).putExtra("command", "pause");
-    next = new Intent(open).putExtra("command", "next");
+    prev = new Intent(open).setAction("prev");
+    pause = new Intent(open).setAction("pause");
+    next = new Intent(open).setAction("next");
   }
 
   public void notify(String text) {
