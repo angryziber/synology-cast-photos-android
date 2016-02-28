@@ -17,9 +17,10 @@ import java.io.IOException
 class CastClient(var activity: MainActivity) {
   private val TAG = CastClient::class.java.simpleName
 
-  private val notification: NotificationWithControls
-  private val appId: String
+  private val notification = NotificationWithControls(activity)
+  private val appId = activity.getString(R.string.app_id)
 
+  private val api = Cast.CastApi;
   private var apiClient: GoogleApiClient? = null
   private var castSessionId: String? = null
   private var receiverStarted: Boolean = false
@@ -27,19 +28,8 @@ class CastClient(var activity: MainActivity) {
 
   private val channel = CastChannel()
   private val mediaRouterCallback = MediaRouterCallback()
-  private val mediaRouter: MediaRouter
-  val mediaRouteSelector: MediaRouteSelector
-
-  private val castApi = Cast.CastApi;
-
-  init {
-    notification = NotificationWithControls(activity)
-    appId = activity.getString(R.string.app_id)
-
-    // Configure Cast device discovery
-    mediaRouter = MediaRouter.getInstance(activity.applicationContext)
-    mediaRouteSelector = MediaRouteSelector.Builder().addControlCategory(categoryForCast(appId)).build()
-  }
+  private val mediaRouter = MediaRouter.getInstance(activity.applicationContext)
+  val mediaRouteSelector = MediaRouteSelector.Builder().addControlCategory(categoryForCast(appId)).build()
 
   fun startDiscovery() {
     mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_REQUEST_DISCOVERY)
@@ -103,8 +93,7 @@ class CastClient(var activity: MainActivity) {
   }
 
   private inner class CastChannel : Cast.MessageReceivedCallback {
-    val namespace: String
-      get() = activity.getString(R.string.namespace)
+    val namespace = activity.getString(R.string.namespace)
 
     override fun onMessageReceived(castDevice: CastDevice, namespace: String, message: String) {
       Log.d(TAG, "onMessageReceived: " + message)
@@ -115,7 +104,7 @@ class CastClient(var activity: MainActivity) {
 
     internal fun register() {
       try {
-        castApi.setMessageReceivedCallbacks(apiClient, namespace, channel)
+        api.setMessageReceivedCallbacks(apiClient, namespace, channel)
       } catch (e: IOException) {
         Log.e(TAG, "Exception while creating channel", e)
       }
@@ -123,7 +112,7 @@ class CastClient(var activity: MainActivity) {
 
     internal fun unregister() {
       try {
-        castApi.removeMessageReceivedCallbacks(apiClient, namespace)
+        api.removeMessageReceivedCallbacks(apiClient, namespace)
       } catch (e: IOException) {
         Log.e(TAG, "Exception while removing channel", e)
       }
@@ -159,7 +148,7 @@ class CastClient(var activity: MainActivity) {
   }
 
   private fun launchReceiver() {
-    castApi.launchApplication(apiClient, appId, LaunchOptions()).setResultCallback({ result ->
+    api.launchApplication(apiClient, appId, LaunchOptions()).setResultCallback({ result ->
       Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode " + result.status.statusCode)
       if (result.status.isSuccess) {
         castSessionId = result.sessionId
@@ -175,12 +164,12 @@ class CastClient(var activity: MainActivity) {
 
   private fun stopReceiver() {
     if (apiClient == null || castSessionId == null) return
-    castApi.stopApplication(apiClient, castSessionId)
+    api.stopApplication(apiClient, castSessionId)
   }
 
   fun sendCommand(message: String) {
     if (apiClient != null)
-      castApi.sendMessage(apiClient, channel.namespace, message)
+      api.sendMessage(apiClient, channel.namespace, message)
     else
       Toast.makeText(activity, "Chromecast not connected", Toast.LENGTH_SHORT).show()
   }
