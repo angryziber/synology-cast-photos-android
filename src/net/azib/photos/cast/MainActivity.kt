@@ -13,20 +13,12 @@ import android.view.GestureDetector
 import android.view.Menu
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.Switch
-import android.widget.TextView
-import butterknife.bindView
+import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-  val randomSwitch: Switch by bindView(R.id.randomSwitch)
-  val styleSwitch: Switch by bindView(R.id.styleSwitch)
-  val path: AutoCompleteTextView by bindView(R.id.photosPathEdit)
-  val castPhotosButton: Button by bindView(R.id.castPhotosButton)
-  val status: TextView by bindView(R.id.status)
   val gestureDetector: GestureDetector by lazy { GestureDetector(this, GestureListener()) }
 
   companion object {

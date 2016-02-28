@@ -14,7 +14,7 @@
     <AutoCompleteTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/photosPathEdit"
+        android:id="@+id/path"
         android:textColor="@android:color/black"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -27,7 +27,7 @@
         android:id="@+id/randomSwitch"
         android:checked="true"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/photosPathEdit"
+        android:layout_below="@id/path"
         android:text="Random"/>
 
     <Button
