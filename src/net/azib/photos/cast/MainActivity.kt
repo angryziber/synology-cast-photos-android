@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity() {
     return true
   }
 
-  fun onMessageReceived(vararg parts: String) {
+  fun onMessageReceived(parts: List<String>) {
     status.text = parts[0]
     if (parts.size == 2)
       status.setOnClickListener { startActivity(Intent(ACTION_VIEW, Uri.parse(parts[1]))) }
