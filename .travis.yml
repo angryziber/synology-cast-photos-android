@@ -1,5 +1,8 @@
 language: android
 
+env:
+  - GRADLE_OPTS="-Xmx512m -XX:MaxPermSize=256m"
+
 android:
   components:
     - android-22
