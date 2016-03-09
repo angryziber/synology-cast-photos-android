@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     path.setAdapter(PhotoDirsSuggestionAdapter(this))
-    path.setText(if (state != null) state.getString("path") else SimpleDateFormat("yyyy").format(Date()))
+    path.setText(state?.getString("path") ?: SimpleDateFormat("yyyy").format(Date()))
     path.setOnItemClickListener { parent, view, pos, id -> castPhotos() }
 
     castPhotosButton.setOnClickListener { castPhotos() }
