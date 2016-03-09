@@ -15,8 +15,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import java.io.IOException
 
 class CastClient(var activity: MainActivity) {
-  private val TAG = CastClient::class.java.simpleName
-
+  private val TAG = javaClass.simpleName
   private val notification = NotificationWithControls(activity)
   private val appId = activity.getString(R.string.app_id)
 
@@ -40,11 +39,11 @@ class CastClient(var activity: MainActivity) {
   }
 
   private inner class MediaRouterCallback : MediaRouter.Callback() {
-    override fun onRouteSelected(router: MediaRouter?, info: MediaRouter.RouteInfo?) {
-      connect(CastDevice.getFromBundle(info!!.extras))
+    override fun onRouteSelected(router: MediaRouter, info: MediaRouter.RouteInfo) {
+      connect(CastDevice.getFromBundle(info.extras))
     }
 
-    override fun onRouteUnselected(router: MediaRouter?, info: MediaRouter.RouteInfo?) {
+    override fun onRouteUnselected(router: MediaRouter, info: MediaRouter.RouteInfo) {
       if (receiverStarted) stopReceiver()
       teardown()
     }
