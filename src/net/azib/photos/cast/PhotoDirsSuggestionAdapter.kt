@@ -3,8 +3,6 @@ package net.azib.photos.cast
 import android.app.Activity
 import android.widget.ArrayAdapter
 import android.widget.Filter
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.net.URL
 import java.util.Collections.emptyList
 
@@ -16,10 +14,10 @@ class PhotoDirsSuggestionAdapter(context: Activity) : ArrayAdapter<String>(conte
   override fun getCount() = suggestions.size
   override fun getItem(index: Int) = suggestions[index]
 
-  fun getSuggestions(dir: String): List<String> {
+  fun getSuggestions(dir: CharSequence?): List<String> {
     try {
       val url = URL("$url?dir=$dir&accessToken=$accessToken")
-      BufferedReader(InputStreamReader(url.openStream())).useLines { return it.toList() }
+      url.openStream().bufferedReader().useLines { return it.toList() }
     } catch (e: Exception) {
       return emptyList()
     }
@@ -29,8 +27,7 @@ class PhotoDirsSuggestionAdapter(context: Activity) : ArrayAdapter<String>(conte
     return object : Filter() {
       override fun performFiltering(constraint: CharSequence?): Filter.FilterResults {
         val results = Filter.FilterResults()
-        if (constraint == null) return results
-        suggestions = getSuggestions(constraint.toString())
+        suggestions = getSuggestions(constraint)
         results.values = suggestions
         results.count = suggestions.size
         return results
