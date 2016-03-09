@@ -6,21 +6,15 @@ import android.widget.Filter
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
-import java.util.*
 import java.util.Collections.emptyList
 
 class PhotoDirsSuggestionAdapter(context: Activity) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
-  private var suggestions: List<String> = ArrayList()
+  private var suggestions: List<String> = emptyList()
   private val accessToken = context.getString(R.string.photos_dirs_access_token)
   private val url = context.getString(R.string.photos_dirs_url)
 
-  override fun getCount(): Int {
-    return suggestions.size
-  }
-
-  override fun getItem(index: Int): String {
-    return suggestions[index]
-  }
+  override fun getCount() = suggestions.size
+  override fun getItem(index: Int) = suggestions[index]
 
   fun getSuggestions(dir: String): List<String> {
     try {
@@ -34,17 +28,16 @@ class PhotoDirsSuggestionAdapter(context: Activity) : ArrayAdapter<String>(conte
   override fun getFilter(): Filter {
     return object : Filter() {
       override fun performFiltering(constraint: CharSequence?): Filter.FilterResults {
-        val filterResults = Filter.FilterResults()
-        if (constraint != null) {
-          suggestions = getSuggestions(constraint.toString())
-          filterResults.values = suggestions
-          filterResults.count = suggestions.size
-        }
-        return filterResults
+        val results = Filter.FilterResults()
+        if (constraint == null) return results
+        suggestions = getSuggestions(constraint.toString())
+        results.values = suggestions
+        results.count = suggestions.size
+        return results
       }
 
-      override fun publishResults(constraint: CharSequence, results: Filter.FilterResults?) {
-        if (results != null && results.count > 0)
+      override fun publishResults(constraint: CharSequence?, results: Filter.FilterResults) {
+        if (results.count > 0)
           notifyDataSetChanged()
         else
           notifyDataSetInvalidated()
