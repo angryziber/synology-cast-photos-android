@@ -43,15 +43,15 @@
                   android:orientation="horizontal" android:layout_below="@+id/castPhotosButton"
                   android:layout_centerHorizontal="true" android:layout_marginBottom="20dp">
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="&lt;&lt;"
-                android:id="@+id/prev_more_button" android:minWidth="60dp"/>
+                android:id="@+id/prevMoreButton" android:minWidth="60dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:id="@+id/prev_button" android:text="&lt;" android:minWidth="75dp"/>
+                android:id="@+id/prevButton" android:text="&lt;" android:minWidth="75dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:id="@+id/pause_button" android:text="||" android:minWidth="60dp"/>
+                android:id="@+id/pauseButton" android:text="||" android:minWidth="60dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">"
-                android:id="@+id/next_button" android:minWidth="75dp"/>
+                android:id="@+id/nextButton" android:minWidth="75dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=">>"
-                android:id="@+id/next_more_button" android:minWidth="60dp"/>
+                android:id="@+id/nextMoreButton" android:minWidth="60dp"/>
     </LinearLayout>
 
     <Switch
@@ -71,15 +71,15 @@
     <LinearLayout android:id="@+id/mark_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_above="@+id/star_buttons" android:layout_centerHorizontal="true">
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="x"
-                android:id="@+id/mark_delete_button" android:minWidth="50dp"/>
+                android:id="@+id/markDeleteButton" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="●"
-                android:id="@+id/mark_red_button" android:textColor="#ff0000" android:minWidth="50dp"/>
+                android:id="@+id/markRedButton" android:textColor="#ff0000" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="●"
-                android:id="@+id/mark_yellow_button" android:textColor="#ffff00" android:minWidth="50dp"/>
+                android:id="@+id/markYellowButton" android:textColor="#ffff00" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="●"
-                android:id="@+id/mark_green_button" android:textColor="#00ff00" android:minWidth="50dp"/>
+                android:id="@+id/markGreenButton" android:textColor="#00ff00" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="●"
-                android:id="@+id/mark_blue_button" android:textColor="#0000ff" android:minWidth="50dp"/>
+                android:id="@+id/markBlueButton" android:textColor="#0000ff" android:minWidth="50dp"/>
     </LinearLayout>
 
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
@@ -89,17 +89,17 @@
     <LinearLayout android:id="@+id/star_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true">
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0"
-                android:id="@+id/mark_0_button" android:minWidth="50dp"/>
+                android:id="@+id/mark0Button" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1"
-                android:id="@+id/mark_1_button" android:minWidth="50dp"/>
+                android:id="@+id/mark1Button" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="2"
-                android:id="@+id/mark_2_button" android:minWidth="50dp"/>
+                android:id="@+id/mark2Button" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="3"
-                android:id="@+id/mark_3_button" android:minWidth="50dp"/>
+                android:id="@+id/mark3Button" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="4"
-                android:id="@+id/mark_4_button" android:minWidth="50dp"/>
+                android:id="@+id/mark4Button" android:minWidth="50dp"/>
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="5"
-                android:id="@+id/mark_5_button" android:minWidth="50dp"/>
+                android:id="@+id/mark5Button" android:minWidth="50dp"/>
     </LinearLayout>
 
 </RelativeLayout>

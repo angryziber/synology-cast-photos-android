@@ -45,22 +45,22 @@ class MainActivity : AppCompatActivity() {
 
     castPhotosButton.setOnClickListener { castPhotos() }
 
-    assignCommand(R.id.next_button, "next")
-    assignCommand(R.id.prev_button, "prev")
-    assignCommand(R.id.pause_button, "pause")
-    assignCommand(R.id.next_more_button, "next:10")
-    assignCommand(R.id.prev_more_button, "prev:10")
-    assignCommand(R.id.mark_delete_button, "mark:delete")
-    assignCommand(R.id.mark_red_button, "mark:red")
-    assignCommand(R.id.mark_yellow_button, "mark:yellow")
-    assignCommand(R.id.mark_green_button, "mark:green")
-    assignCommand(R.id.mark_blue_button, "mark:blue")
-    assignCommand(R.id.mark_0_button, "mark:0")
-    assignCommand(R.id.mark_1_button, "mark:1")
-    assignCommand(R.id.mark_2_button, "mark:2")
-    assignCommand(R.id.mark_3_button, "mark:3")
-    assignCommand(R.id.mark_4_button, "mark:4")
-    assignCommand(R.id.mark_5_button, "mark:5")
+    assignCommand(nextButton, "next")
+    assignCommand(prevButton, "prev")
+    assignCommand(pauseButton, "pause")
+    assignCommand(nextMoreButton, "next:10")
+    assignCommand(prevMoreButton, "prev:10")
+    assignCommand(markDeleteButton, "mark:delete")
+    assignCommand(markRedButton, "mark:red")
+    assignCommand(markYellowButton, "mark:yellow")
+    assignCommand(markGreenButton, "mark:green")
+    assignCommand(markBlueButton, "mark:blue")
+    assignCommand(mark0Button, "mark:0")
+    assignCommand(mark1Button, "mark:1")
+    assignCommand(mark2Button, "mark:2")
+    assignCommand(mark3Button, "mark:3")
+    assignCommand(mark4Button, "mark:4")
+    assignCommand(mark5Button, "mark:5")
 
     randomSwitch.setOnClickListener { cast!!.sendCommand(if (randomSwitch.isChecked) "rnd" else "seq") }
 
@@ -97,8 +97,7 @@ class MainActivity : AppCompatActivity() {
     return super.onTouchEvent(event)
   }
 
-  private fun assignCommand(buttonId: Int, command: String) {
-    val button = findViewById(buttonId) as Button
+  private fun assignCommand(button: Button, command: String) {
     button.setOnClickListener { cast!!.sendCommand(command) }
   }
 
