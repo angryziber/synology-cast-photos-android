@@ -22,8 +22,7 @@ class MainActivity : AppCompatActivity() {
   lateinit var gestureDetector: GestureDetector
 
   companion object {
-    @JvmStatic
-    internal var cast: CastClient? = null
+    lateinit var cast: CastClient
   }
 
   override fun onCreate(state: Bundle?) {
@@ -34,10 +33,12 @@ class MainActivity : AppCompatActivity() {
 
     setContentView(R.layout.activity_main)
 
-    if (cast == null)
+    try {
+      cast.activity = this
+    }
+    catch (e: UninitializedPropertyAccessException) {
       cast = CastClient(this)
-    else
-      cast!!.activity = this
+    }
 
     path.setAdapter(PhotoDirsSuggestionAdapter(this))
     path.setText(if (state != null) state.getString("path") else SimpleDateFormat("yyyy").format(Date()))
@@ -62,9 +63,9 @@ class MainActivity : AppCompatActivity() {
     assignCommand(mark4Button, "mark:4")
     assignCommand(mark5Button, "mark:5")
 
-    randomSwitch.setOnClickListener { cast!!.sendCommand(if (randomSwitch.isChecked) "rnd" else "seq") }
+    randomSwitch.setOnClickListener { cast.sendCommand(if (randomSwitch.isChecked) "rnd" else "seq") }
 
-    styleSwitch.setOnClickListener { cast!!.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain") }
+    styleSwitch.setOnClickListener { cast.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain") }
     gestureDetector = GestureDetector(this, GestureListener())
   }
 
@@ -74,9 +75,9 @@ class MainActivity : AppCompatActivity() {
     override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
       if (Math.abs(velocityX) < Math.abs(velocityY)) return false
       if (velocityX > 0)
-        cast!!.sendCommand("prev")
+        cast.sendCommand("prev")
       else
-        cast!!.sendCommand("next")
+        cast.sendCommand("next")
       return true
     }
   }
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
   override fun onNewIntent(intent: Intent?) {
     super.onNewIntent(intent)
     val command = intent!!.action
-    if (command != null) cast!!.sendCommand(command)
+    if (command != null) cast.sendCommand(command)
   }
 
   override fun onSaveInstanceState(state: Bundle) {
@@ -98,11 +99,11 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun assignCommand(button: Button, command: String) {
-    button.setOnClickListener { cast!!.sendCommand(command) }
+    button.setOnClickListener { cast.sendCommand(command) }
   }
 
   private fun castPhotos() {
-    cast!!.sendCommand((if (randomSwitch.isChecked) "rnd:" else "seq:") + path.text)
+    cast.sendCommand((if (randomSwitch.isChecked) "rnd:" else "seq:") + path.text)
     path.clearFocus()
     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(path.windowToken, 0)
@@ -110,11 +111,11 @@ class MainActivity : AppCompatActivity() {
 
   override fun onResume() {
     super.onResume()
-    cast!!.startDiscovery()
+    cast.startDiscovery()
   }
 
   override fun onPause() {
-    if (isFinishing) cast!!.stopDiscovery()
+    if (isFinishing) cast.stopDiscovery()
     super.onPause()
   }
 
@@ -124,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     val mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item)
     val mediaRouteActionProvider = MenuItemCompat.getActionProvider(mediaRouteMenuItem) as MediaRouteActionProvider
     // Set the MediaRouteActionProvider selector for device discovery.
-    mediaRouteActionProvider.routeSelector = cast!!.mediaRouteSelector
+    mediaRouteActionProvider.routeSelector = cast.mediaRouteSelector
     return true
   }
 
