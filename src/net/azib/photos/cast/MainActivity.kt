@@ -1,6 +1,5 @@
 package net.azib.photos.cast
 
-import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -82,9 +81,9 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  override fun onNewIntent(intent: Intent?) {
+  override fun onNewIntent(intent: Intent) {
     super.onNewIntent(intent)
-    val command = intent!!.action
+    val command = intent.action
     if (command != null) cast.sendCommand(command)
   }
 
@@ -105,8 +104,7 @@ class MainActivity : AppCompatActivity() {
   private fun castPhotos() {
     cast.sendCommand((if (randomSwitch.isChecked) "rnd:" else "seq:") + path.text)
     path.clearFocus()
-    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(path.windowToken, 0)
+    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(path.windowToken, 0)
   }
 
   override fun onResume() {
