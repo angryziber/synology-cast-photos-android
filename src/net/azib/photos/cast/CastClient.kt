@@ -65,10 +65,10 @@ class CastClient(var activity: MainActivity) {
 
   internal fun teardown() {
     Log.d(TAG, "teardown")
-    if (apiClient == null) return
-    if (receiverStarted && (apiClient!!.isConnected || apiClient!!.isConnecting)) {
+    val client = apiClient ?: return
+    if (receiverStarted && (client.isConnected || client.isConnecting)) {
       channel.unregister()
-      apiClient!!.disconnect()
+      client.disconnect()
     }
     apiClient = null
     castSessionId = null
