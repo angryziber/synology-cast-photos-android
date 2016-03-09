@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-  val gestureDetector: GestureDetector by lazy { GestureDetector(this, GestureListener()) }
+  lateinit var gestureDetector: GestureDetector
 
   companion object {
     @JvmStatic
@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
     randomSwitch.setOnClickListener { cast!!.sendCommand(if (randomSwitch.isChecked) "rnd" else "seq") }
 
     styleSwitch.setOnClickListener { cast!!.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain") }
+    gestureDetector = GestureDetector(this, GestureListener())
   }
 
   class GestureListener : GestureDetector.SimpleOnGestureListener() {
