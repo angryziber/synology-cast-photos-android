@@ -22,8 +22,8 @@ class CastClient(var activity: MainActivity) {
   private val api = Cast.CastApi;
   private var apiClient: GoogleApiClient? = null
   private var castSessionId: String? = null
-  private var receiverStarted: Boolean = false
-  private var reconnecting: Boolean = false
+  private var receiverStarted = false
+  private var reconnecting = false
 
   private val channel = CastChannel()
   private val mediaRouterCallback = MediaRouterCallback()
