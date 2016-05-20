@@ -5,7 +5,7 @@ env:
 
 android:
   components:
-    - android-22
+    - android-23
     - build-tools-22.0.1
     - add-on
     - extra
