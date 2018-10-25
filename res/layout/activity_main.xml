@@ -27,18 +27,7 @@
         android:checked="true"
         android:layout_below="@+id/path"
         android:text="Random"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="84dp"/>
-
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/videosSwitch"
-        android:checked="false"
-        android:layout_below="@+id/path"
-        android:text="Videos"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="75dp"/>
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/castPhotosButton"
@@ -47,7 +36,20 @@
         android:layout_gravity="center"
         android:text="Cast Photos"
         android:layout_marginBottom="20dp" android:layout_marginTop="20dp"
-        android:layout_below="@+id/randomSwitch" android:layout_centerHorizontal="true"/>
+        android:layout_below="@+id/randomSwitch"
+        android:layout_alignParentStart="true" android:layout_alignParentLeft="true"
+        android:layout_marginStart="60dp" android:layout_marginLeft="60dp"/>
+
+    <Button
+        android:id="@+id/castVideosButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Cast Videos"
+        android:layout_marginBottom="20dp" android:layout_marginTop="20dp"
+        android:layout_below="@+id/randomSwitch"
+        android:layout_alignParentEnd="true" android:layout_alignParentRight="true"
+        android:layout_marginEnd="46dp" android:layout_marginRight="60dp"/>
 
     <LinearLayout android:id="@+id/nav_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_below="@+id/castPhotosButton"

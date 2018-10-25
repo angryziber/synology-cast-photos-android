@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     path.setOnItemClickListener { parent, view, pos, id -> castPhotos() }
 
     castPhotosButton.setOnClickListener { castPhotos() }
+    castVideosButton.setOnClickListener { castVideos() }
 
     assignCommand(nextButton, "next")
     assignCommand(prevButton, "prev")
@@ -62,14 +63,13 @@ class MainActivity : AppCompatActivity() {
     assignCommand(mark4Button, "mark:4")
     assignCommand(mark5Button, "mark:5")
 
-    videosSwitch.setOnClickListener {
-      cast.sendCommand((if (videosSwitch.isChecked) "videos:" else "photos:") + path.text)
-    }
     randomSwitch.setOnClickListener {
       cast.sendCommand(if (randomSwitch.isChecked) "rnd" else "seq")
     }
+    styleSwitch.setOnClickListener {
+      cast.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain")
+    }
 
-    styleSwitch.setOnClickListener { cast.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain") }
     gestureDetector = GestureDetector(this, GestureListener())
   }
 
@@ -107,7 +107,17 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun castPhotos() {
-    cast.sendCommand((if (randomSwitch.isChecked) "rnd:" else "seq:") + path.text)
+    cast.sendCommand("photos:" + path.text)
+    if (!randomSwitch.isChecked) cast.sendCommand("seq:" + path.text)
+    clearPathFocus()
+  }
+
+  private fun castVideos() {
+    cast.sendCommand("videos:" + path.text)
+    clearPathFocus()
+  }
+
+  private fun clearPathFocus() {
     path.clearFocus()
     (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(path.windowToken, 0)
   }
