@@ -62,7 +62,12 @@ class MainActivity : AppCompatActivity() {
     assignCommand(mark4Button, "mark:4")
     assignCommand(mark5Button, "mark:5")
 
-    randomSwitch.setOnClickListener { cast.sendCommand(if (randomSwitch.isChecked) "rnd" else "seq") }
+    videosSwitch.setOnClickListener {
+      cast.sendCommand((if (videosSwitch.isChecked) "videos:" else "photos:") + path.text)
+    }
+    randomSwitch.setOnClickListener {
+      cast.sendCommand(if (randomSwitch.isChecked) "rnd" else "seq")
+    }
 
     styleSwitch.setOnClickListener { cast.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain") }
     gestureDetector = GestureDetector(this, GestureListener())
