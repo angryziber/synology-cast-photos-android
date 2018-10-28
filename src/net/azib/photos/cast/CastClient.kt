@@ -20,7 +20,7 @@ class CastClient(var activity: Activity) {
   private val notification = NotificationWithControls(activity)
   private val appId = activity.getString(R.string.app_id)
 
-  private val api = Cast.CastApi;
+  private val api = Cast.CastApi
   private var apiClient: GoogleApiClient? = null
   private var castSessionId: String? = null
   private var receiverStarted = false

@@ -18,6 +18,10 @@ import android.view.*
 import kotlinx.android.synthetic.main.photos.*
 import kotlinx.android.synthetic.main.tabs.*
 
+enum class CastType {
+  Photos, Videos
+}
+
 class MainActivity : AppCompatActivity(), TabListener {
   private lateinit var sectionsPagerAdapter: SectionsPagerAdapter
   lateinit var cast: CastClient
@@ -95,17 +99,12 @@ class MainActivity : AppCompatActivity(), TabListener {
   override fun onTabReselected(tab: Tab, fragmentTransaction: FragmentTransaction) {}
 
   inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-    override fun getCount() = 2
+    override fun getCount() = CastType.values().size
+    override fun getPageTitle(position: Int) = CastType.values()[position].name
 
     override fun getItem(position: Int) = when (position) {
       0 -> PhotosFragment()
       1 -> VideosFragment()
-      else -> null
-    }
-
-    override fun getPageTitle(position: Int) = when (position) {
-      0 -> getString(R.string.tab_photos)
-      1 -> getString(R.string.tab_videos)
       else -> null
     }
   }
