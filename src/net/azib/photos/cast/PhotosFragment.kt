@@ -48,7 +48,7 @@ class PhotosFragment : BaseTabFragment() {
   }
 
   private fun castPhotos() {
-    cast.sendCommand("$ordering:${path.text}")
+    cast.sendCommand("photos:$ordering:${path.text}")
     clearPathFocus()
   }
 }
