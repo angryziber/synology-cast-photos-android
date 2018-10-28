@@ -1,18 +1,15 @@
 package net.azib.photos.cast
 
 import android.R.drawable
-import android.app.Notification
+import android.app.*
 import android.app.Notification.VISIBILITY_PUBLIC
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_UPDATE_CURRENT
-import android.app.TaskStackBuilder
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION_CODES.LOLLIPOP
 
-class NotificationWithControls(val activity: MainActivity) {
+class NotificationWithControls(val activity: Activity) {
   val notificationManager = activity.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
   val open = Intent(activity, activity.javaClass)
   val prev = Intent(open).setAction("prev")

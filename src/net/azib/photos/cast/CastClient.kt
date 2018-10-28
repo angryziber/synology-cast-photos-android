@@ -1,5 +1,6 @@
 package net.azib.photos.cast
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v7.media.MediaRouteSelector
 import android.support.v7.media.MediaRouter
@@ -14,7 +15,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import java.io.IOException
 
-class CastClient(var activity: MainActivity) {
+class CastClient(var activity: Activity) {
   private val TAG = javaClass.simpleName
   private val notification = NotificationWithControls(activity)
   private val appId = activity.getString(R.string.app_id)
@@ -95,10 +96,10 @@ class CastClient(var activity: MainActivity) {
     val namespace = activity.getString(R.string.namespace)
 
     override fun onMessageReceived(castDevice: CastDevice, namespace: String, message: String) {
-      Log.d(TAG, "onMessageReceived: " + message)
+      Log.d(TAG, "onMessageReceived: $message")
       val parts = message.split("\\|".toRegex(), 2)
       notification.notify(parts[0])
-      activity.onMessageReceived(parts)
+      (activity as MainActivity).onMessageReceived(parts)
     }
 
     internal fun register() {
@@ -147,7 +148,7 @@ class CastClient(var activity: MainActivity) {
   }
 
   private fun launchReceiver() {
-    api.launchApplication(apiClient, appId, LaunchOptions()).setResultCallback({ result ->
+    api.launchApplication(apiClient, appId, LaunchOptions()).setResultCallback { result ->
       Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode " + result.status.statusCode)
       if (result.status.isSuccess) {
         castSessionId = result.sessionId
@@ -158,7 +159,7 @@ class CastClient(var activity: MainActivity) {
         Log.e(TAG, "application could not launch")
         teardown()
       }
-    })
+    }
   }
 
   private fun stopReceiver() {

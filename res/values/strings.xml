@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">Cast NAS photos</string>
+  <string name="app_name">Cast NAS</string>
   <string name="app_id_local">40FA4E04</string>
   <string name="app_id">87673D37</string>
   <string name="namespace">urn:x-cast:message</string>
@@ -11,5 +11,7 @@
   <string name="message_to_cast">Message to Cast&#8230;</string>
   <string name="media_route_menu_title">Play on&#8230;</string>
   <string name="instructions">Talk to me</string>
+  <string name="tab_photos">Photos</string>
+  <string name="tab_videos">Videos</string>
 
 </resources>
