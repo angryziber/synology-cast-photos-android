@@ -23,17 +23,22 @@ class NotificationWithControls(val activity: Activity) {
 
     val resultPendingIntent = stackBuilder.getPendingIntent(0, FLAG_UPDATE_CURRENT)
 
-    val builder = Notification.Builder(activity).setSmallIcon(R.drawable.ic_launcher).setContentTitle("Cast Photos").setContentText(text).setContentIntent(resultPendingIntent)
+    val notification = Notification.Builder(activity).apply {
+      setSmallIcon(R.drawable.ic_launcher)
+      setContentTitle(activity.getString(R.string.app_name))
+      setContentText(text)
+      setContentIntent(resultPendingIntent)
 
-    if (Build.VERSION.SDK_INT >= LOLLIPOP) {
-      builder.setVisibility(VISIBILITY_PUBLIC)
-      builder.addAction(drawable.ic_media_previous, "Previous", PendingIntent.getActivity(activity, 0, prev, 0))
-      builder.addAction(drawable.ic_media_pause, "Pause", PendingIntent.getActivity(activity, 0, pause, 0))
-      builder.addAction(drawable.ic_media_next, "Next", PendingIntent.getActivity(activity, 0, next, 0))
-      builder.setStyle(Notification.MediaStyle().setShowActionsInCompactView(0, 1, 2))
-    }
+      if (Build.VERSION.SDK_INT >= LOLLIPOP) {
+        setVisibility(VISIBILITY_PUBLIC)
+        addAction(drawable.ic_media_previous, "Previous", PendingIntent.getActivity(activity, 0, prev, 0))
+        addAction(drawable.ic_media_pause, "Pause", PendingIntent.getActivity(activity, 0, pause, 0))
+        addAction(drawable.ic_media_next, "Next", PendingIntent.getActivity(activity, 0, next, 0))
+        setStyle(Notification.MediaStyle().setShowActionsInCompactView(0, 1, 2))
+        setOngoing(true)
+      }
+    }.build()
 
-    val notification = builder.build()
     notificationManager.notify(1, notification)
   }
 
