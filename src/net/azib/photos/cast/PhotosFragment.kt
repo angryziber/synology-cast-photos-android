@@ -1,21 +1,13 @@
 package net.azib.photos.cast
 
-import android.app.Fragment
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import kotlinx.android.synthetic.main.photos.*
-import java.text.SimpleDateFormat
-import java.util.*
 
-class PhotosFragment : Fragment() {
-  private val cast get() = (activity as MainActivity).cast
+class PhotosFragment : BaseTabFragment() {
   private val ordering get() = if (randomSwitch.isChecked) "rnd" else "seq"
-  private val inputMethodManager get() = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? {
     return inflater.inflate(R.layout.photos, container, false)
@@ -23,7 +15,7 @@ class PhotosFragment : Fragment() {
 
   override fun onViewCreated(view: View?, state: Bundle?) {
     path.setAdapter(PhotoDirsSuggestionAdapter(activity))
-    path.setText(state?.getString("path") ?: SimpleDateFormat("yyyy").format(Date()))
+    path.setText(state?.getString("path") ?: currentYear)
     path.setOnItemClickListener { _, _, _, _ -> castPhotos() }
 
     castButton.setOnClickListener { castPhotos() }
@@ -53,17 +45,8 @@ class PhotosFragment : Fragment() {
     }
   }
 
-  private fun assignCommand(button: Button, command: String) {
-    button.setOnClickListener { cast.sendCommand(command) }
-  }
-
   private fun castPhotos() {
     cast.sendCommand("$ordering:${path.text}")
     clearPathFocus()
-  }
-
-  private fun clearPathFocus() {
-    path.clearFocus()
-    inputMethodManager.hideSoftInputFromWindow(path.windowToken, 0)
   }
 }
