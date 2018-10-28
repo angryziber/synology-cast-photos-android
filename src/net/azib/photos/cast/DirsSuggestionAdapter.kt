@@ -6,10 +6,10 @@ import android.widget.Filter
 import java.net.URL
 import java.util.Collections.emptyList
 
-class PhotoDirsSuggestionAdapter(context: Activity) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
+class DirsSuggestionAdapter(context: Activity, urlSuffix: String) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
   private var suggestions: List<String> = emptyList()
-  private val accessToken = context.getString(R.string.photos_dirs_access_token)
-  private val url = context.getString(R.string.photos_dirs_url)
+  private val accessToken = context.getString(R.string.backend_access_token)
+  private val url = context.getString(R.string.backend_url) + urlSuffix
 
   override fun getCount() = suggestions.size
   override fun getItem(index: Int) = suggestions[index]

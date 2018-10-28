@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <string name="app_id_local">40FA4E04</string>
+  <string name="app_id">87673D37</string>
+  <string name="namespace">urn:x-cast:message</string>
+  <string name="backend_url">http://192.168.0.2/backend/</string>
+  <string name="photos_dirs">photos_dirs.php</string>
+  <string name="videos_dirs">videos_dirs.php</string>
+  <string name="backend_access_token"></string>
+
+</resources>
