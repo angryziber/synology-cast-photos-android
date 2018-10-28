@@ -12,53 +12,33 @@ import kotlinx.android.synthetic.main.photos.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PhotosFragment : Fragment() {
+class VideosFragment : Fragment() {
   private val cast get() = (activity as MainActivity).cast
-  private val ordering get() = if (randomSwitch.isChecked) "rnd" else "seq"
   private val inputMethodManager get() = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? {
-    return inflater.inflate(R.layout.photos, container, false)
+    return inflater.inflate(R.layout.videos, container, false)
   }
 
   override fun onViewCreated(view: View?, state: Bundle?) {
-    path.setAdapter(PhotoDirsSuggestionAdapter(activity))
     path.setText(state?.getString("path") ?: SimpleDateFormat("yyyy").format(Date()))
-    path.setOnItemClickListener { _, _, _, _ -> castPhotos() }
+    path.setOnItemClickListener { _, _, _, _ -> castVideos() }
 
-    castButton.setOnClickListener { castPhotos() }
+    castButton.setOnClickListener { castVideos() }
 
     assignCommand(nextButton, "next")
     assignCommand(prevButton, "prev")
     assignCommand(pauseButton, "pause")
     assignCommand(nextMoreButton, "next:10")
     assignCommand(prevMoreButton, "prev:10")
-    assignCommand(markDeleteButton, "mark:delete")
-    assignCommand(markRedButton, "mark:red")
-    assignCommand(markYellowButton, "mark:yellow")
-    assignCommand(markGreenButton, "mark:green")
-    assignCommand(markBlueButton, "mark:blue")
-    assignCommand(mark0Button, "mark:0")
-    assignCommand(mark1Button, "mark:1")
-    assignCommand(mark2Button, "mark:2")
-    assignCommand(mark3Button, "mark:3")
-    assignCommand(mark4Button, "mark:4")
-    assignCommand(mark5Button, "mark:5")
-
-    randomSwitch.setOnClickListener {
-      cast.sendCommand(ordering)
-    }
-    styleSwitch.setOnClickListener {
-      cast.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain")
-    }
   }
 
   private fun assignCommand(button: Button, command: String) {
     button.setOnClickListener { cast.sendCommand(command) }
   }
 
-  private fun castPhotos() {
-    cast.sendCommand("$ordering:${path.text}")
+  private fun castVideos() {
+    cast.sendCommand("videos:${path.text}")
     clearPathFocus()
   }
 

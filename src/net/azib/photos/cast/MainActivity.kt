@@ -95,20 +95,18 @@ class MainActivity : AppCompatActivity(), TabListener {
   override fun onTabReselected(tab: Tab, fragmentTransaction: FragmentTransaction) {}
 
   inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-    override fun getItem(position: Int): Fragment {
-      return PhotosFragment()
+    override fun getCount() = 2
+
+    override fun getItem(position: Int) = when (position) {
+      0 -> PhotosFragment()
+      1 -> VideosFragment()
+      else -> null
     }
 
-    override fun getCount(): Int {
-      return 2
-    }
-
-    override fun getPageTitle(position: Int): CharSequence? {
-      when (position) {
-        0 -> return getString(R.string.tab_photos)
-        1 -> return getString(R.string.tab_videos)
-      }
-      return null
+    override fun getPageTitle(position: Int) = when (position) {
+      0 -> getString(R.string.tab_photos)
+      1 -> getString(R.string.tab_videos)
+      else -> null
     }
   }
 }
