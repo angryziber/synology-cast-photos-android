@@ -62,11 +62,6 @@
         android:layout_below="@id/nav_buttons"
         android:text="Cover screen"/>
 
-    <TextView android:id="@+id/status"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_below="@id/styleSwitch" android:layout_centerInParent="true"
-        android:layout_marginTop="20dp" android:textColor="@color/accent_material_dark"/>
-
     <LinearLayout android:id="@+id/mark_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_above="@+id/star_buttons" android:layout_centerHorizontal="true">
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="x"

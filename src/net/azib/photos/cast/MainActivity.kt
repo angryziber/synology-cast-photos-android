@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity(), TabListener {
   private lateinit var sectionsPagerAdapter: SectionsPagerAdapter
   lateinit var cast: CastClient
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+  override fun onCreate(state: Bundle?) {
+    super.onCreate(state)
 
     if (resources.getBoolean(R.bool.portrait_only))
       requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
