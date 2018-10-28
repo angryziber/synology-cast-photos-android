@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.photos.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,7 +18,7 @@ class PhotosFragment : Fragment() {
   private val inputMethodManager get() = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? {
-    return inflater.inflate(R.layout.activity_main, container, false)
+    return inflater.inflate(R.layout.photos, container, false)
   }
 
   override fun onViewCreated(view: View?, state: Bundle?) {

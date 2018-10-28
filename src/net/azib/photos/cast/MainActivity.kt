@@ -15,8 +15,8 @@ import android.support.v7.app.ActionBar.TabListener
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.MediaRouteActionProvider
 import android.view.*
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_tabbed.*
+import kotlinx.android.synthetic.main.photos.*
+import kotlinx.android.synthetic.main.tabs.*
 
 class MainActivity : AppCompatActivity(), TabListener {
   private lateinit var sectionsPagerAdapter: SectionsPagerAdapter
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), TabListener {
     if (resources.getBoolean(R.bool.portrait_only))
       requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-    setContentView(R.layout.activity_tabbed)
+    setContentView(R.layout.tabs)
     sectionsPagerAdapter = SectionsPagerAdapter(fragmentManager)
 
     container.adapter = sectionsPagerAdapter
