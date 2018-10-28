@@ -11,9 +11,11 @@
     tools:context=".MainActivity">
 
     <AutoCompleteTextView
+        android:id="@+id/path"
+        android:singleLine="true"
+        android:hint="Path"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/path"
         android:textColor="@android:color/black"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" android:layout_marginTop="20dp" android:layout_marginBottom="@dimen/path_margin_bottom"
