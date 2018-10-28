@@ -15,6 +15,7 @@ class VideosFragment : BaseTabFragment() {
     path.setAdapter(DirsSuggestionAdapter(activity, getString(R.string.videos_dirs)))
     path.setText(state?.getString("path") ?: currentYear)
     path.setOnItemClickListener { _, _, _, _ -> castVideos() }
+    path.setOnEditorActionListener { _, _, _ -> castVideos(); true }
 
     castButton.setOnClickListener { castVideos() }
 

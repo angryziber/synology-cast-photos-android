@@ -1,6 +1,7 @@
 package net.azib.photos.cast
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class PhotosFragment : BaseTabFragment() {
     path.setAdapter(DirsSuggestionAdapter(activity, getString(R.string.photos_dirs)))
     path.setText(state?.getString("path") ?: currentYear)
     path.setOnItemClickListener { _, _, _, _ -> castPhotos() }
+    path.setOnEditorActionListener { _, _, _ -> castPhotos(); true }
 
     castButton.setOnClickListener { castPhotos() }
 
