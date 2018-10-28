@@ -15,8 +15,21 @@ class NotificationWithControls(val activity: Activity) {
   val notificationManager = activity.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
   val open = Intent(activity, activity.javaClass)
   val prev = Intent(open).setAction("prev")
-  val pause = Intent(open).setAction("prev")
+  val pause = Intent(open).setAction("pause")
   val next = Intent(open).setAction("next")
+  val channelId = "Cast"
+
+  init {
+    if (Build.VERSION.SDK_INT >= 26) {
+      notificationManager.createNotificationChannel(
+        NotificationChannel(channelId, channelId, NotificationManager.IMPORTANCE_LOW).apply {
+          enableVibration(false)
+          enableLights(false)
+          setSound(null, null)
+        }
+      )
+    }
+  }
 
   fun notify(text: String, token: MediaSessionCompat.Token?) {
     val stackBuilder = TaskStackBuilder.create(activity)
@@ -25,7 +38,7 @@ class NotificationWithControls(val activity: Activity) {
 
     val resultPendingIntent = stackBuilder.getPendingIntent(0, FLAG_UPDATE_CURRENT)
 
-    val notification = Notification.Builder(activity).apply {
+    val notification = createNotificationBuilder().apply {
       setSmallIcon(R.drawable.ic_launcher)
       setContentTitle(activity.getString(R.string.app_name))
       setContentText(text)
@@ -45,6 +58,9 @@ class NotificationWithControls(val activity: Activity) {
 
     notificationManager.notify(1, notification)
   }
+
+  private fun createNotificationBuilder() = if (Build.VERSION.SDK_INT >= 26)
+    Notification.Builder(activity, channelId) else Notification.Builder(activity)
 
   fun cancel() {
     notificationManager.cancelAll()
