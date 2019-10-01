@@ -1,7 +1,7 @@
 package net.azib.photos.cast
 
-import android.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import kotlinx.android.synthetic.main.photos.*
@@ -10,7 +10,7 @@ import java.util.*
 
 abstract class BaseTabFragment : Fragment() {
   protected val cast get() = (activity as MainActivity).cast
-  private val inputMethodManager get() = activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+  private val inputMethodManager get() = activity!!.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
   protected val currentYear get() = SimpleDateFormat("yyyy").format(Date())
 
   protected fun assignCommand(button: Button, command: String) {

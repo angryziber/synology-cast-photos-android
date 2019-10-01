@@ -2,9 +2,9 @@ package net.azib.photos.cast
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.v7.media.MediaRouteSelector
-import android.support.v7.media.MediaRouter
-import android.support.v7.media.MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY
+import androidx.mediarouter.media.MediaRouteSelector
+import androidx.mediarouter.media.MediaRouter
+import androidx.mediarouter.media.MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.cast.Cast

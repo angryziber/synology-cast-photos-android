@@ -1,19 +1,20 @@
 package net.azib.photos.cast
 
-import android.app.*
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
-import android.support.v13.app.FragmentPagerAdapter
-import android.support.v4.view.MenuItemCompat
-import android.support.v4.view.ViewPager
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.ActionBar.Tab
-import android.support.v7.app.ActionBar.TabListener
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.MediaRouteActionProvider
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.core.view.MenuItemCompat
+import androidx.viewpager.widget.ViewPager
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.ActionBar.Tab
+import androidx.appcompat.app.ActionBar.TabListener
+import androidx.appcompat.app.AppCompatActivity
+import androidx.mediarouter.app.MediaRouteActionProvider
 import android.view.*
 import kotlinx.android.synthetic.main.photos.*
 import kotlinx.android.synthetic.main.tabs.*
@@ -33,15 +34,15 @@ class MainActivity : AppCompatActivity(), TabListener {
       requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
     setContentView(R.layout.tabs)
-    sectionsPagerAdapter = SectionsPagerAdapter(fragmentManager)
+    sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
-    container.adapter = sectionsPagerAdapter
+    container.setAdapter(sectionsPagerAdapter)
 
     val actionBar = supportActionBar!!.apply {
       navigationMode = ActionBar.NAVIGATION_MODE_TABS
     }
 
-    container.setOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+    container.setOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
       override fun onPageSelected(position: Int) {
         actionBar.setSelectedNavigationItem(position)
       }
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity(), TabListener {
   }
 
   override fun onTabSelected(tab: Tab, fragmentTransaction: FragmentTransaction) {
-    container.currentItem = tab.position
+    container.setCurrentItem(tab.position, true)
   }
 
   override fun onTabUnselected(tab: Tab, fragmentTransaction: FragmentTransaction) {}

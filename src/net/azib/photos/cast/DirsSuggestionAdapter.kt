@@ -3,10 +3,11 @@ package net.azib.photos.cast
 import android.app.Activity
 import android.widget.ArrayAdapter
 import android.widget.Filter
+import androidx.fragment.app.FragmentActivity
 import java.net.URL
 import java.util.Collections.emptyList
 
-class DirsSuggestionAdapter(context: Activity, urlSuffix: String) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
+class DirsSuggestionAdapter(context: FragmentActivity, urlSuffix: String) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
   private var suggestions: List<String> = emptyList()
   private val accessToken = context.getString(R.string.backend_access_token)
   private val url = context.getString(R.string.backend_url) + urlSuffix

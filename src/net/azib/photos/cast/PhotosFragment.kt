@@ -14,8 +14,8 @@ class PhotosFragment : BaseTabFragment() {
     return inflater.inflate(R.layout.photos, container, false)
   }
 
-  override fun onViewCreated(view: View?, state: Bundle?) {
-    path.setAdapter(DirsSuggestionAdapter(activity, getString(R.string.photos_dirs)))
+  override fun onViewCreated(view: View, state: Bundle?) {
+    path.setAdapter(DirsSuggestionAdapter(activity!!, getString(R.string.photos_dirs)))
     path.setText(state?.getString("path") ?: currentYear)
     path.setOnItemClickListener { _, _, _, _ -> castPhotos() }
     path.setOnEditorActionListener { _, _, _ -> castPhotos(); true }

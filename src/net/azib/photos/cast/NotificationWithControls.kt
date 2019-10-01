@@ -46,6 +46,7 @@ class NotificationWithControls(val activity: Activity) {
 
       if (Build.VERSION.SDK_INT >= LOLLIPOP) {
         setVisibility(VISIBILITY_PUBLIC)
+        setAutoCancel(false)
         addAction(drawable.ic_media_previous, "Previous", PendingIntent.getActivity(activity, 0, prev, 0))
         addAction(drawable.ic_media_pause, "Pause", PendingIntent.getActivity(activity, 0, pause, 0))
         addAction(drawable.ic_media_next, "Next", PendingIntent.getActivity(activity, 0, next, 0))
