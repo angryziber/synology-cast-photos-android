@@ -1,7 +1,6 @@
 package net.azib.photos.cast
 
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +40,9 @@ class PhotosFragment : BaseTabFragment() {
 
     randomSwitch.setOnClickListener {
       cast.sendCommand(ordering)
+    }
+    modeSwitch.setOnClickListener {
+      cast.sendCommand(if (modeSwitch.isChecked) "mode:video" else "mode:img")
     }
     styleSwitch.setOnClickListener {
       cast.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain")

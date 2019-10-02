@@ -55,14 +55,23 @@
                 android:id="@+id/nextMoreButton" android:minWidth="60dp"/>
     </LinearLayout>
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/styleSwitch"
-        android:checked="false"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/nav_buttons"
-        android:text="Cover screen"/>
+    <LinearLayout android:id="@+id/switches" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:orientation="horizontal" android:layout_below="@+id/nav_buttons" android:layout_centerHorizontal="true">
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/modeSwitch"
+            android:checked="true"
+            android:text="4K"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:id="@+id/styleSwitch"
+            android:checked="false"
+            android:text="Cover"/>
+    </LinearLayout>
 
     <LinearLayout android:id="@+id/mark_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_above="@+id/star_buttons" android:layout_centerHorizontal="true">
