@@ -5,18 +5,17 @@ import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.core.view.MenuItemCompat
-import androidx.viewpager.widget.ViewPager
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+import android.view.Menu
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBar.Tab
 import androidx.appcompat.app.ActionBar.TabListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuItemCompat
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentTransaction
 import androidx.mediarouter.app.MediaRouteActionProvider
-import android.view.*
-import kotlinx.android.synthetic.main.photos.*
+import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.tabs.*
 
 enum class CastType {
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity(), TabListener {
     setContentView(R.layout.tabs)
     sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
-    container.setAdapter(sectionsPagerAdapter)
+    container.adapter = sectionsPagerAdapter
 
     val actionBar = supportActionBar!!.apply {
       navigationMode = ActionBar.NAVIGATION_MODE_TABS
