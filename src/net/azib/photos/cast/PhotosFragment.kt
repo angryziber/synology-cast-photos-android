@@ -48,7 +48,7 @@ class PhotosFragment : BaseTabFragment() {
       cast.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain")
     }
     mapSwitch.setOnClickListener {
-      cast.sendCommand(if (styleSwitch.isChecked) "show:map" else "hide:map")
+      cast.sendCommand(if (mapSwitch.isChecked) "show:map" else "hide:map")
     }
   }
 
