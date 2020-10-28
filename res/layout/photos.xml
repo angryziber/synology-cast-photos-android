@@ -81,6 +81,13 @@
             android:text="Map"/>
     </LinearLayout>
 
+    <LinearLayout android:id="@+id/intervalLayout" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:orientation="horizontal" android:layout_below="@+id/switches" android:layout_marginTop="10dp" android:layout_centerHorizontal="true">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Interval"/>
+        <EditText android:id="@+id/interval" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="10" android:inputType="number"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="sec"/>
+    </LinearLayout>
+
     <LinearLayout android:id="@+id/mark_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:orientation="horizontal" android:layout_above="@+id/star_buttons" android:layout_centerHorizontal="true">
         <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="x"

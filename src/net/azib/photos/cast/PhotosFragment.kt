@@ -1,6 +1,8 @@
 package net.azib.photos.cast
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +22,14 @@ class PhotosFragment : BaseTabFragment() {
     path.setOnEditorActionListener { _, _, _ -> castPhotos(); true }
 
     castButton.setOnClickListener { castPhotos() }
+
+    interval.addTextChangedListener(object : TextWatcher {
+      override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+      override fun afterTextChanged(p0: Editable?) {}
+      override fun onTextChanged(v: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        if (v?.isNotEmpty() == true) cast.sendCommand("interval:$v")
+      }
+    })
 
     assignCommand(nextButton, "next")
     assignCommand(prevButton, "prev")
