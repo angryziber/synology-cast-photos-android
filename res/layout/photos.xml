@@ -71,6 +71,14 @@
             android:id="@+id/styleSwitch"
             android:checked="false"
             android:text="Cover"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:id="@+id/mapSwitch"
+            android:checked="false"
+            android:text="Map"/>
     </LinearLayout>
 
     <LinearLayout android:id="@+id/mark_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"
