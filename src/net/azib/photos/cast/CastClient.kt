@@ -15,10 +15,9 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import java.io.IOException
 
-class CastClient(var activity: Activity) {
+class CastClient(var activity: Activity, var appId: AppId) {
   private val TAG = javaClass.simpleName
   private val notification = NotificationWithControls(activity)
-  private val appId = activity.getString(R.string.app_id)
 
   private val api = Cast.CastApi
   private var apiClient: GoogleApiClient? = null
@@ -29,7 +28,7 @@ class CastClient(var activity: Activity) {
   private val channel = CastChannel()
   private val mediaRouterCallback = MediaRouterCallback()
   private val mediaRouter = MediaRouter.getInstance(activity.applicationContext)
-  val mediaRouteSelector = MediaRouteSelector.Builder().addControlCategory(categoryForCast(appId)).build()
+  val mediaRouteSelector = MediaRouteSelector.Builder().addControlCategory(categoryForCast(appId.id)).build()
 
   fun startDiscovery() {
     mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_REQUEST_DISCOVERY)
@@ -148,7 +147,7 @@ class CastClient(var activity: Activity) {
   }
 
   private fun launchReceiver() {
-    api.launchApplication(apiClient, appId, LaunchOptions()).setResultCallback { result ->
+    api.launchApplication(apiClient, appId.id, LaunchOptions()).setResultCallback { result ->
       Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode " + result.status.statusCode)
       if (result.status.isSuccess) {
         castSessionId = result.sessionId

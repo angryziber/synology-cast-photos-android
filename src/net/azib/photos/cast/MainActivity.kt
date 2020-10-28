@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBar.Tab
 import androidx.appcompat.app.ActionBar.TabListener
@@ -24,10 +25,16 @@ enum class CastType {
 
 class MainActivity : AppCompatActivity(), TabListener {
   private lateinit var sectionsPagerAdapter: SectionsPagerAdapter
+  lateinit var appIds: List<AppId>
   lateinit var cast: CastClient
 
   override fun onCreate(state: Bundle?) {
     super.onCreate(state)
+
+    appIds = resources.getStringArray(R.array.app_ids).map {
+      val p = it.split("|")
+      AppId(p[0], p[1], p[2], p[3])
+    }
 
     if (resources.getBoolean(R.bool.portrait_only))
       requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -41,7 +48,7 @@ class MainActivity : AppCompatActivity(), TabListener {
       navigationMode = ActionBar.NAVIGATION_MODE_TABS
     }
 
-    container.setOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
+    container.addOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
       override fun onPageSelected(position: Int) {
         actionBar.setSelectedNavigationItem(position)
       }
@@ -53,7 +60,7 @@ class MainActivity : AppCompatActivity(), TabListener {
       }
     }
 
-    cast = CastClient(this)
+    cast = CastClient(this, appIds.first())
   }
 
   override fun onNewIntent(intent: Intent) {
@@ -70,6 +77,17 @@ class MainActivity : AppCompatActivity(), TabListener {
   override fun onPause() {
     if (isFinishing) cast.stopDiscovery()
     super.onPause()
+  }
+
+  fun selectAppId(m: MenuItem) {
+    if (m.subMenu.size() == 0) {
+      appIds.forEach {
+        appId -> m.subMenu.add(appId.name).setOnMenuItemClickListener {
+          cast.appId = appId
+          true
+        }
+      }
+    }
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {

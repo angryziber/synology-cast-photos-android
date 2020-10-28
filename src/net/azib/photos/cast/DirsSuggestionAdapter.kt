@@ -1,23 +1,20 @@
 package net.azib.photos.cast
 
-import android.app.Activity
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import androidx.fragment.app.FragmentActivity
 import java.net.URL
 import java.util.Collections.emptyList
 
-class DirsSuggestionAdapter(context: FragmentActivity, urlSuffix: String) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
+class DirsSuggestionAdapter(context: FragmentActivity, val appId: AppId, val urlSuffix: String) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
   private var suggestions: List<String> = emptyList()
-  private val accessToken = context.getString(R.string.backend_access_token)
-  private val url = context.getString(R.string.backend_url) + urlSuffix
 
   override fun getCount() = suggestions.size
   override fun getItem(index: Int) = suggestions[index]
 
   fun getSuggestions(dir: CharSequence?): List<String> {
     try {
-      val url = URL("$url?dir=$dir&accessToken=$accessToken")
+      val url = URL("${appId.url}$urlSuffix?dir=$dir&accessToken=${appId.token}")
       url.openStream().bufferedReader().useLines { return it.toList() }
     } catch (e: Exception) {
       return emptyList()
