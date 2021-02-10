@@ -124,8 +124,7 @@ class MainActivity : AppCompatActivity(), TabListener {
 
     override fun getItem(position: Int) = when (position) {
       0 -> PhotosFragment()
-      1 -> VideosFragment()
-      else -> null
+      else -> VideosFragment()
     }
   }
 }
