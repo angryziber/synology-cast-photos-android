@@ -25,10 +25,11 @@ class PhotosFragment : BaseTabFragment() {
     castButton.setOnClickListener { sendPath() }
 
     interval.addTextChangedListener(object : TextWatcher {
-      override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+      override fun beforeTextChanged(v: CharSequence?, p1: Int, p2: Int, p3: Int) {}
       override fun afterTextChanged(p0: Editable?) {}
-      override fun onTextChanged(v: CharSequence?, p1: Int, p2: Int, p3: Int) {
-        if (v?.isNotEmpty() == true) cast.sendCommand("interval:$v")
+      override fun onTextChanged(v: CharSequence?, start: Int, before: Int, count: Int) {
+        val userChange = Math.abs(count - before) == 1
+        if (userChange && v?.isNotEmpty() == true) cast.sendCommand("interval:$v")
       }
     })
 
@@ -50,22 +51,22 @@ class PhotosFragment : BaseTabFragment() {
     assignCommand(mark5Button, "mark:5")
 
     randomSwitch.setOnClickListener {
-      cast.sendCommand(ordering)
+      if (it.isPressed) cast.sendCommand(ordering)
     }
     photosSwitch.setOnClickListener {
-      cast.sendCommand((if (photosSwitch.isChecked) "show" else "hide") + ":photos")
+      if (it.isPressed) cast.sendCommand((if (photosSwitch.isChecked) "show" else "hide") + ":photos")
     }
     videosSwitch.setOnClickListener {
-      cast.sendCommand((if (videosSwitch.isChecked) "show" else "hide") + ":videos")
+      if (it.isPressed) cast.sendCommand((if (videosSwitch.isChecked) "show" else "hide") + ":videos")
     }
     modeSwitch.setOnClickListener {
-      cast.sendCommand(if (modeSwitch.isChecked) "mode:video" else "mode:img")
+      if (it.isPressed) cast.sendCommand(if (modeSwitch.isChecked) "mode:video" else "mode:img")
     }
     styleSwitch.setOnClickListener {
-      cast.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain")
+      if (it.isPressed) cast.sendCommand(if (styleSwitch.isChecked) "style:cover" else "style:contain")
     }
     mapSwitch.setOnClickListener {
-      cast.sendCommand(if (mapSwitch.isChecked) "show:map" else "hide:map")
+      if (it.isPressed) cast.sendCommand(if (mapSwitch.isChecked) "show:map" else "hide:map")
     }
   }
 
@@ -78,10 +79,10 @@ class PhotosFragment : BaseTabFragment() {
     state.optString("path").let { if (it.isNotEmpty()) path.setText(it) }
     randomSwitch.isChecked = state.getBoolean("random")
     modeSwitch.isChecked = state.getString("mode") == "video"
-    interval.setText(state.getString("interval"))
     styleSwitch.isChecked = state.getString("style") == "cover"
     mapSwitch.isChecked = state.optBoolean("map")
     photosSwitch.isChecked = state.getBoolean("photos")
     videosSwitch.isChecked = state.getBoolean("videos")
+    interval.setText(state.getString("interval"))
   }
 }
