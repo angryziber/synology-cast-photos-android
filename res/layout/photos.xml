@@ -21,23 +21,41 @@
         android:layout_alignParentStart="true" android:layout_marginTop="20dp" android:layout_marginBottom="@dimen/path_margin_bottom"
         android:layout_alignParentEnd="true" android:textSize="24sp"/>
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/randomSwitch"
-        android:checked="true"
-        android:layout_below="@+id/path"
-        android:text="Random"
-        android:layout_centerHorizontal="true"/>
+    <LinearLayout android:id="@+id/switches1" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:orientation="horizontal" android:layout_below="@+id/path"
+                  android:layout_centerHorizontal="true" android:layout_marginTop="10dp" android:layout_marginBottom="20dp">
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/randomSwitch"
+            android:checked="true"
+            android:text="Random"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:id="@+id/photosSwitch"
+            android:checked="true"
+            android:text="Photos"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:id="@+id/videosSwitch"
+            android:checked="false"
+            android:text="Videos"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/castButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Cast Photos"
+        android:text="Cast"
         android:layout_marginBottom="20dp" android:layout_marginTop="20dp"
-        android:layout_below="@+id/randomSwitch"
+        android:layout_below="@+id/switches1"
         android:layout_centerInParent="true"/>
 
     <LinearLayout android:id="@+id/nav_buttons" android:layout_width="wrap_content" android:layout_height="wrap_content"

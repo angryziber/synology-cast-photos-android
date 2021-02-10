@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.photos.*
+import org.json.JSONObject
 
 class PhotosFragment : BaseTabFragment() {
   private val ordering get() = if (randomSwitch.isChecked) "rnd" else "seq"
@@ -65,5 +66,15 @@ class PhotosFragment : BaseTabFragment() {
   private fun castPhotos() {
     cast.sendCommand("photos:$ordering:${path.text}")
     clearPathFocus()
+  }
+
+  fun updateState(state: JSONObject) {
+    state.optString("path").let { if (it.isNotEmpty()) path.setText(it) }
+    randomSwitch.isChecked = state.getBoolean("random")
+    modeSwitch.isChecked = state.getString("mode") == "video"
+    interval.setText(state.getString("interval"))
+    styleSwitch.isChecked = state.getString("style") == "contain"
+    photosSwitch.isChecked = state.getBoolean("photos")
+    videosSwitch.isChecked = state.getBoolean("videos")
   }
 }

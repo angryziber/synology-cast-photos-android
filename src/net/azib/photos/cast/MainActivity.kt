@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
 import androidx.mediarouter.app.MediaRouteActionProvider
 import kotlinx.android.synthetic.main.main.*
+import org.json.JSONObject
 
 class MainActivity: AppCompatActivity() {
   lateinit var castAppId: String
@@ -71,6 +72,10 @@ class MainActivity: AppCompatActivity() {
   }
 
   fun onMessageReceived(parts: List<String>) {
+    if (parts[0].startsWith("state:")) {
+      (container as PhotosFragment).updateState(JSONObject(parts[0].substring("state:".length)))
+      return
+    }
     status.text = parts[0]
     if (parts.size == 2)
       status.setOnClickListener { startActivity(Intent(ACTION_VIEW, Uri.parse(parts[1]))) }

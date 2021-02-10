@@ -96,7 +96,7 @@ class CastClient(var activity: Activity, var appId: String, var receiver: Receiv
 
     override fun onMessageReceived(castDevice: CastDevice, namespace: String, message: String) {
       Log.d(TAG, "onMessageReceived: $message")
-      val parts = message.split("\\|".toRegex(), 2)
+      val parts = message.split("|", limit = 2)
       notification.notify(parts[0], mediaRouter.mediaSessionToken)
       (activity as MainActivity).onMessageReceived(parts)
     }
