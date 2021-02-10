@@ -73,7 +73,8 @@ class PhotosFragment : BaseTabFragment() {
     randomSwitch.isChecked = state.getBoolean("random")
     modeSwitch.isChecked = state.getString("mode") == "video"
     interval.setText(state.getString("interval"))
-    styleSwitch.isChecked = state.getString("style") == "contain"
+    styleSwitch.isChecked = state.getString("style") == "cover"
+    mapSwitch.isChecked = state.optBoolean("map")
     photosSwitch.isChecked = state.getBoolean("photos")
     videosSwitch.isChecked = state.getBoolean("videos")
   }
