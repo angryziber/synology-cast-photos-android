@@ -19,10 +19,10 @@ class PhotosFragment : BaseTabFragment() {
   override fun onViewCreated(view: View, state: Bundle?) {
     path.setAdapter(DirsSuggestionAdapter(activity!!, cast.receiver, getString(R.string.suggestPhotosPath)))
     path.setText(state?.getString("path") ?: currentYear)
-    path.setOnItemClickListener { _, _, _, _ -> castPhotos() }
-    path.setOnEditorActionListener { _, _, _ -> castPhotos(); true }
+    path.setOnItemClickListener { _, _, _, _ -> sendPath() }
+    path.setOnEditorActionListener { _, _, _ -> sendPath(); true }
 
-    castButton.setOnClickListener { castPhotos() }
+    castButton.setOnClickListener { sendPath() }
 
     interval.addTextChangedListener(object : TextWatcher {
       override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -52,6 +52,12 @@ class PhotosFragment : BaseTabFragment() {
     randomSwitch.setOnClickListener {
       cast.sendCommand(ordering)
     }
+    photosSwitch.setOnClickListener {
+      cast.sendCommand((if (photosSwitch.isChecked) "show" else "hide") + ":photos")
+    }
+    videosSwitch.setOnClickListener {
+      cast.sendCommand((if (videosSwitch.isChecked) "show" else "hide") + ":videos")
+    }
     modeSwitch.setOnClickListener {
       cast.sendCommand(if (modeSwitch.isChecked) "mode:video" else "mode:img")
     }
@@ -63,8 +69,8 @@ class PhotosFragment : BaseTabFragment() {
     }
   }
 
-  private fun castPhotos() {
-    cast.sendCommand("photos:$ordering:${path.text}")
+  private fun sendPath() {
+    cast.sendCommand("$ordering:${path.text}")
     clearPathFocus()
   }
 
