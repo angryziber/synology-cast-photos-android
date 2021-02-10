@@ -25,15 +25,17 @@ enum class CastType {
 
 class MainActivity : AppCompatActivity(), TabListener {
   private lateinit var sectionsPagerAdapter: SectionsPagerAdapter
-  lateinit var appIds: List<AppId>
+  lateinit var castAppId: String
+  lateinit var receivers: List<Receiver>
   lateinit var cast: CastClient
 
   override fun onCreate(state: Bundle?) {
     super.onCreate(state)
-
-    appIds = resources.getStringArray(R.array.app_ids).map {
+    castAppId = resources.getString(R.string.castAppId)
+    val receiverPath = resources.getString(R.string.receiverPath)
+    receivers = resources.getStringArray(R.array.receivers).map {
       val p = it.split("|")
-      AppId(p[0], p[1], p[2], p[3])
+      Receiver(p[0], p[1] + receiverPath, p[2])
     }
 
     if (resources.getBoolean(R.bool.portrait_only))
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity(), TabListener {
       }
     }
 
-    cast = CastClient(this, appIds.first())
+    cast = CastClient(this, castAppId, receivers.first())
   }
 
   override fun onNewIntent(intent: Intent) {
@@ -81,9 +83,9 @@ class MainActivity : AppCompatActivity(), TabListener {
 
   fun selectAppId(m: MenuItem) {
     if (m.subMenu.size() == 0) {
-      appIds.forEach {
+      receivers.forEach {
         appId -> m.subMenu.add(appId.name).setOnMenuItemClickListener {
-          cast.appId = appId
+          cast.receiver = appId
           true
         }
       }

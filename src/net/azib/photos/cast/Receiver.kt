@@ -1,8 +1,7 @@
 package net.azib.photos.cast
 
-class AppId(
+class Receiver(
   val name: String,
-  val id: String,
   val url: String,
   val token: String
 )

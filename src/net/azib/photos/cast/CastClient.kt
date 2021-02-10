@@ -15,7 +15,7 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import java.io.IOException
 
-class CastClient(var activity: Activity, var appId: AppId) {
+class CastClient(var activity: Activity, var appId: String, var receiver: Receiver) {
   private val TAG = javaClass.simpleName
   private val notification = NotificationWithControls(activity)
 
@@ -28,7 +28,7 @@ class CastClient(var activity: Activity, var appId: AppId) {
   private val channel = CastChannel()
   private val mediaRouterCallback = MediaRouterCallback()
   private val mediaRouter = MediaRouter.getInstance(activity.applicationContext)
-  val mediaRouteSelector = MediaRouteSelector.Builder().addControlCategory(categoryForCast(appId.id)).build()
+  val mediaRouteSelector = MediaRouteSelector.Builder().addControlCategory(categoryForCast(appId)).build()
 
   fun startDiscovery() {
     mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_REQUEST_DISCOVERY)
@@ -101,7 +101,7 @@ class CastClient(var activity: Activity, var appId: AppId) {
       (activity as MainActivity).onMessageReceived(parts)
     }
 
-    internal fun register() {
+    fun register() {
       try {
         api.setMessageReceivedCallbacks(apiClient, namespace, channel)
       } catch (e: IOException) {
@@ -109,7 +109,7 @@ class CastClient(var activity: Activity, var appId: AppId) {
       }
     }
 
-    internal fun unregister() {
+    fun unregister() {
       try {
         api.removeMessageReceivedCallbacks(apiClient, namespace)
       } catch (e: IOException) {
@@ -147,13 +147,14 @@ class CastClient(var activity: Activity, var appId: AppId) {
   }
 
   private fun launchReceiver() {
-    api.launchApplication(apiClient, appId.id, LaunchOptions()).setResultCallback { result ->
+    api.launchApplication(apiClient, appId, LaunchOptions()).setResultCallback { result ->
       Log.d(TAG, "ApplicationConnectionResultCallback.onResult: statusCode " + result.status.statusCode)
       if (result.status.isSuccess) {
         castSessionId = result.sessionId
         Log.d(TAG, "application name: ${result.applicationMetadata.name}, status: ${result.applicationStatus}, sessionId: ${castSessionId}, wasLaunched: ${result.wasLaunched}")
         receiverStarted = true
         channel.register()
+        sendCommand("url:${receiver.url}")
       } else {
         Log.e(TAG, "application could not launch")
         teardown()

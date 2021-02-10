@@ -12,7 +12,7 @@ class VideosFragment : BaseTabFragment() {
   }
 
   override fun onViewCreated(view: View, state: Bundle?) {
-    path.setAdapter(DirsSuggestionAdapter(activity!!, cast.appId, getString(R.string.videos_dirs)))
+    path.setAdapter(DirsSuggestionAdapter(activity!!, cast.receiver, getString(R.string.suggestVideosPath)))
     path.setText(state?.getString("path") ?: currentYear)
     path.setOnItemClickListener { _, _, _, _ -> castVideos() }
     path.setOnEditorActionListener { _, _, _ -> castVideos(); true }

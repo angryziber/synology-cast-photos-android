@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentActivity
 import java.net.URL
 import java.util.Collections.emptyList
 
-class DirsSuggestionAdapter(context: FragmentActivity, val appId: AppId, val urlSuffix: String) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
+class DirsSuggestionAdapter(context: FragmentActivity, val appId: Receiver, val urlSuffix: String) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
   private var suggestions: List<String> = emptyList()
 
   override fun getCount() = suggestions.size

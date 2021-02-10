@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="namespace">urn:x-cast:message</string>
-  <string name="photos_dirs">/backend/photos_dirs.php</string>
-  <string name="videos_dirs">/backend/videos_dirs.php</string>
+  <string name="castAppId">F8FB0863</string>
+  <string name="receiverPath">/receiver/</string>
+  <string name="suggestPhotosPath">/backend/photos_dirs.php</string>
+  <string name="suggestVideosPath">/backend/videos_dirs.php</string>
 
-  <string-array name="app_ids">
-    <!-- NAME|APP_ID|URL|ACCESS_TOKEN -->
-    <item>Local NAS|40FA4E04|http://192.168.0.2|</item>
+  <string-array name="receivers">
+    <!-- NAME|URL|ACCESS_TOKEN -->
+    <item>Local NAS|http://192.168.0.2|</item>
   </string-array>
 </resources>
