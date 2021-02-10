@@ -7,24 +7,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.ActionBar.Tab
-import androidx.appcompat.app.ActionBar.TabListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuItemCompat
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentTransaction
 import androidx.mediarouter.app.MediaRouteActionProvider
-import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.tabs.*
+import kotlinx.android.synthetic.main.main.*
 
-enum class CastType {
-  Photos, Videos
-}
-
-class MainActivity : AppCompatActivity(), TabListener {
-  private lateinit var sectionsPagerAdapter: SectionsPagerAdapter
+class MainActivity: AppCompatActivity() {
   lateinit var castAppId: String
   lateinit var receivers: List<Receiver>
   lateinit var cast: CastClient
@@ -41,28 +29,8 @@ class MainActivity : AppCompatActivity(), TabListener {
     if (resources.getBoolean(R.bool.portrait_only))
       requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-    setContentView(R.layout.tabs)
-    sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-
-    container.adapter = sectionsPagerAdapter
-
-    val actionBar = supportActionBar!!.apply {
-      navigationMode = ActionBar.NAVIGATION_MODE_TABS
-    }
-
-    container.addOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
-      override fun onPageSelected(position: Int) {
-        actionBar.setSelectedNavigationItem(position)
-      }
-    })
-
-    sectionsPagerAdapter.let {
-      for (i in 0 until it.count) {
-        actionBar.addTab(actionBar.newTab().setText(it.getPageTitle(i)).setTabListener(this))
-      }
-    }
-
     cast = CastClient(this, castAppId, receivers.first())
+    setContentView(R.layout.main)
   }
 
   override fun onNewIntent(intent: Intent) {
@@ -108,23 +76,5 @@ class MainActivity : AppCompatActivity(), TabListener {
       status.setOnClickListener { startActivity(Intent(ACTION_VIEW, Uri.parse(parts[1]))) }
     else
       status.isClickable = false
-  }
-
-  override fun onTabSelected(tab: Tab, fragmentTransaction: FragmentTransaction) {
-    container.setCurrentItem(tab.position, true)
-  }
-
-  override fun onTabUnselected(tab: Tab, fragmentTransaction: FragmentTransaction) {}
-
-  override fun onTabReselected(tab: Tab, fragmentTransaction: FragmentTransaction) {}
-
-  inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-    override fun getCount() = CastType.values().size
-    override fun getPageTitle(position: Int) = CastType.values()[position].name
-
-    override fun getItem(position: Int) = when (position) {
-      0 -> PhotosFragment()
-      else -> VideosFragment()
-    }
   }
 }
