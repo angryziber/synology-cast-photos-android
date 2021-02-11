@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentActivity
 import java.net.URL
 import java.util.Collections.emptyList
 
-class DirsSuggestionAdapter(context: FragmentActivity, val appId: Receiver, val urlSuffix: String) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
+class DirsSuggestionAdapter(context: FragmentActivity, val receiver: Receiver, val urlSuffix: String) : ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line) {
   private var suggestions: List<String> = emptyList()
 
   override fun getCount() = suggestions.size
@@ -14,8 +14,8 @@ class DirsSuggestionAdapter(context: FragmentActivity, val appId: Receiver, val 
 
   fun getSuggestions(dir: CharSequence?): List<String> {
     try {
-      val url = URL("${appId.url}$urlSuffix?dir=$dir&accessToken=${appId.token}")
-      url.openStream().bufferedReader().useLines { return it.toList() }
+      val url = URL("${receiver.url}$urlSuffix?dir=$dir&accessToken=${receiver.token}")
+      url.openStream().bufferedReader().useLines { return it.toList().sortedDescending() }
     } catch (e: Exception) {
       return emptyList()
     }
@@ -23,15 +23,15 @@ class DirsSuggestionAdapter(context: FragmentActivity, val appId: Receiver, val 
 
   override fun getFilter(): Filter {
     return object : Filter() {
-      override fun performFiltering(constraint: CharSequence?): Filter.FilterResults {
-        val results = Filter.FilterResults()
+      override fun performFiltering(constraint: CharSequence?): FilterResults {
+        val results = FilterResults()
         suggestions = getSuggestions(constraint)
         results.values = suggestions
         results.count = suggestions.size
         return results
       }
 
-      override fun publishResults(constraint: CharSequence?, results: Filter.FilterResults) {
+      override fun publishResults(constraint: CharSequence?, results: FilterResults) {
         if (results.count > 0)
           notifyDataSetChanged()
         else
