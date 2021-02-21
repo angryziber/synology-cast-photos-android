@@ -14,8 +14,12 @@ class DirsSuggestionAdapter(context: FragmentActivity, private val receiver: Rec
 
   fun getSuggestions(dir: CharSequence?): List<String> {
     try {
-      val url = URL("${receiver.url}$path?dir=$dir&accessToken=${receiver.token}")
-      url.openStream().bufferedReader().useLines { return it.toList().sortedDescending() }
+      val lastPlus = dir!!.lastIndexOf('+') + 1
+      val prefix = dir.substring(0, lastPlus)
+      val query = dir.substring(lastPlus)
+      if (query.length <= 2) return emptyList()
+      val url = URL("${receiver.url}$path?dir=$query&accessToken=${receiver.token}")
+      return url.openStream().bufferedReader().useLines { it.map { prefix + it }.toList() }
     } catch (e: Exception) {
       return emptyList()
     }
