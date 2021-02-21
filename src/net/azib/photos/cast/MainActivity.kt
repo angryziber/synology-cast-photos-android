@@ -24,7 +24,7 @@ class MainActivity: AppCompatActivity() {
     val receiverPath = resources.getString(R.string.receiverPath)
     receivers = resources.getStringArray(R.array.receivers).map {
       val p = it.split("|")
-      Receiver(p[0], p[1] + receiverPath, p[2])
+      Receiver(p[0], p[1], receiverPath, p[2])
     }
 
     if (resources.getBoolean(R.bool.portrait_only))

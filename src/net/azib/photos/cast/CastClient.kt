@@ -154,7 +154,7 @@ class CastClient(var activity: Activity, var appId: String, var receiver: Receiv
         Log.d(TAG, "application name: ${result.applicationMetadata.name}, status: ${result.applicationStatus}, sessionId: ${castSessionId}, wasLaunched: ${result.wasLaunched}")
         receiverStarted = true
         channel.register()
-        sendCommand("url:${receiver.url}")
+        sendCommand("url:${receiver.fullUrl}")
       } else {
         Log.e(TAG, "application could not launch")
         teardown()
