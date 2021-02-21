@@ -19,7 +19,7 @@ class DirsSuggestionAdapter(context: FragmentActivity, private val receiver: Rec
       val query = dir.substring(lastPlus)
       if (query.length <= 2) return emptyList()
       val url = URL("${receiver.url}$path?dir=$query&accessToken=${receiver.token}")
-      return url.openStream().bufferedReader().useLines { it.map { prefix + it }.toList() }
+      return url.openStream().bufferedReader().useLines { it.map { prefix + it }.sortedDescending().toList() }
     } catch (e: Exception) {
       return emptyList()
     }
